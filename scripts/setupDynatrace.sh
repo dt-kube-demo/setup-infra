@@ -1,38 +1,16 @@
+#!/bin/bash
+
+# load in the shared library and validate argument
+. ./deploymentArgument.lib
+export DEPLOYMENT=$1
+validate_deployment_argument $DEPLOYMENT
+
 LOG_LOCATION=./logs
 exec > >(tee -i $LOG_LOCATION/setupDynatrace.log)
 exec 2>&1
 
 YLW='\033[1;33m'
 NC='\033[0m'
-
-# Validate Deployment argument
-if [ -z $1 ]
-then
-  echo ""
-  echo "============================================="
-  echo "Missing 'deployment type' argument."
-  echo "Usage:"
-  echo "./0-InstallTools.sh <deployment type>"
-  echo "valid deployment types are: ocp eks gcp aks"
-  echo "=============================================" 
-  echo ""
-  exit 1
-fi
-
-export DEPLOYMENT=$1
-OK=0 ; DEPLOY_TYPES="ocp eks gcp aks"
-for DT in $DEPLOY_TYPES ; do [ $DEPLOYMENT == $DT ] && { OK=1 ; break; } ; done
-if [ $OK -eq 0 ]; then
-  echo ""
-  echo "====================================="
-  echo "Missing 'deployment type' argument."
-  echo "Usage:"
-  echo "./setupDynatrace.sh <deployment type>"
-  echo "valid deployment types are: ocp eks gcp aks"
-  echo "====================================="   
-  echo ""
-  exit 1
-fi
 
 export DT_TENANT_ID=$(cat creds.json | jq -r '.dynatraceTenant')
 export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
