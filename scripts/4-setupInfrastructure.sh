@@ -35,9 +35,11 @@ echo " "
 echo "===================================================="
 echo About to setup demo app infrastructure with these parameters:
 cat creds.json | grep -E "jenkins|dynatrace|github"
-if [ $DEPLOYMENT == aks ]; then
-  cat creds.json | grep -E "azure"
-fi
+case $DEPLOYMENT in
+  aks)
+    cat creds.json | grep -E "azure"
+    ;;
+esac
 read -rsp $'Press ctrl-c to abort. Press any key to continue...\n====================================================' -n1 key
 
 export START_TIME=$(date)
