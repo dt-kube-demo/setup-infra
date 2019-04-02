@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# load in the shared library and validate argument
+. ./deploymentArgument.lib
+export DEPLOYMENT=$1
+validate_deployment_argument $DEPLOYMENT
+
 LOG_LOCATION=./logs
 exec > >(tee -i $LOG_LOCATION/2-defineCredentials.log)
 exec 2>&1
@@ -62,9 +67,9 @@ echo "GitHub Personal Access Token: $GITHUB_PERSONAL_ACCESS_TOKEN"
 echo "GitHub User Email           : $GITHUB_USER_EMAIL"
 echo "GitHub Organization         : $GITHUB_ORGANIZATION" 
 if [ $DEPLOYMENT == aks ]; then
-  read -p "Azure Subscription       : $AZURE_SUBSCRIPTION"
-  read -p "Azure Location           : $AZURE_LOCATION"
-  read -p "Azure Owner Name         : $AZURE_OWNER_NAME"
+  echo "Azure Subscription       : $AZURE_SUBSCRIPTION"
+  echo "Azure Location           : $AZURE_LOCATION"
+  echo "Azure Owner Name         : $AZURE_OWNER_NAME"
 fi
 read -p "Is this all correct? (y/n) : " -n 1 -r
 echo ""
