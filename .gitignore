@@ -14,9 +14,9 @@ scripts/logs/*.log
 manifests/gen/
 
 # terraform generated files
-terraform/.terraform*
-terraform/terraform.tfstate*
-terraform/*.yaml
+eks_terraform/.terraform*
+eks_terraform/terraform.tfstate*
+eks_terraform/*.yaml
 
 # pipeline generated files
 pipelines/gen/*.xml

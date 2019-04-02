@@ -18,6 +18,9 @@ then
     export GITHUB_USER_NAME=$(cat creds.json | jq -r '.githubUserName')
     export GITHUB_USER_EMAIL=$(cat creds.json | jq -r '.githubUserEmail')
     export GITHUB_ORGANIZATION=$(cat creds.json | jq -r '.githubOrg')
+    export AZURE_SUBSCRIPTION=$(cat creds.json | jq -r '.azureSubscription')
+    export AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
+    export AZURE_OWNER_NAME=$(cat creds.json | jq -r '.azureOwnerName')
 fi
 
 clear
@@ -31,6 +34,11 @@ read -p "GitHub User Name               (current: $GITHUB_USER_NAME) : " GITHUB_
 read -p "GitHub Personal Access Token   (current: $GITHUB_PERSONAL_ACCESS_TOKEN) : " GITHUB_PERSONAL_ACCESS_TOKEN_NEW
 read -p "GitHub User Email              (current: $GITHUB_USER_EMAIL) : " GITHUB_USER_EMAIL_NEW
 read -p "GitHub Organization            (current: $GITHUB_ORGANIZATION) : " GITHUB_ORGANIZATION_NEW
+if [ $DEPLOYMENT == aks ]; then
+  read -p "Azure Subscription             (current: $AZURE_SUBSCRIPTION) : " AZURE_SUBSCRIPTION_NEW
+  read -p "Azure Location                 (current: $AZURE_LOCATION) : " AZURE_LOCATION_NEW
+  read -p "Azure Owner Name               (current: $AZURE_OWNER_NAME) : " AZURE_OWNER_NAME_NEW
+fi
 echo "==================================================================="
 echo ""
 # set value to new input or default to current value
@@ -41,15 +49,23 @@ GITHUB_USER_NAME=${GITHUB_USER_NAME_NEW:-$GITHUB_USER_NAME}
 GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN_NEW:-$GITHUB_PERSONAL_ACCESS_TOKEN}
 GITHUB_USER_EMAIL=${GITHUB_USER_EMAIL_NEW:-$GITHUB_USER_EMAIL}
 GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION_NEW:-$GITHUB_ORGANIZATION}
+AZURE_SUBSCRIPTION=${AZURE_SUBSCRIPTION_NEW:-$AZURE_SUBSCRIPTION}
+AZURE_LOCATION=${AZURE_LOCATION_NEW:-$AZURE_LOCATION}
+AZURE_OWNER_NAME=${AZURE_OWNER_NAME_NEW:-$AZURE_OWNER_NAME}
 
 echo -e "${YLW}Please confirm all are correct: ${NC}"
-echo "Dynatrace Tenant: $DT_TENANT_ID"
-echo "Dynatrace API Token: $DT_API_TOKEN"
-echo "Dynatrace PaaS Token: $DT_PAAS_TOKEN"
-echo "GitHub User Name: $GITHUB_USER_NAME"
+echo "Dynatrace Tenant            : $DT_TENANT_ID"
+echo "Dynatrace API Token         : $DT_API_TOKEN"
+echo "Dynatrace PaaS Token        : $DT_PAAS_TOKEN"
+echo "GitHub User Name            : $GITHUB_USER_NAME"
 echo "GitHub Personal Access Token: $GITHUB_PERSONAL_ACCESS_TOKEN"
-echo "GitHub User Email: $GITHUB_USER_EMAIL"
-echo "GitHub Organization: $GITHUB_ORGANIZATION" 
+echo "GitHub User Email           : $GITHUB_USER_EMAIL"
+echo "GitHub Organization         : $GITHUB_ORGANIZATION" 
+if [ $DEPLOYMENT == aks ]; then
+  read -p "Azure Subscription       : $AZURE_SUBSCRIPTION"
+  read -p "Azure Location           : $AZURE_LOCATION"
+  read -p "Azure Owner Name         : $AZURE_OWNER_NAME"
+fi
 read -p "Is this all correct? (y/n) : " -n 1 -r
 echo ""
 echo "==================================================================="
@@ -65,7 +81,11 @@ then
       sed 's~PERSONAL_ACCESS_TOKEN_PLACEHOLDER~'"$GITHUB_PERSONAL_ACCESS_TOKEN"'~' | \
       sed 's~GITHUB_USER_EMAIL_PLACEHOLDER~'"$GITHUB_USER_EMAIL"'~' | \
       sed 's~GITHUB_ORG_PLACEHOLDER~'"$GITHUB_ORGANIZATION"'~' >> $CREDS
-
+      if [ $DEPLOYMENT == aks ]; then
+        sed 's~AZURE_SUBSCRIPTION_PLACEHOLDER~'"$AZURE_SUBSCRIPTION"'~' >> $CREDS
+        sed 's~AZURE_LOCATION_PLACEHOLDER~'"$AZURE_LOCATION"'~' >> $CREDS
+        sed 's~AZURE_OWNER_NAME_PLACEHOLDER~'"$AZURE_OWNER_NAME"'~' >> $CREDS
+      fi
     echo ""
     echo "The credentials file can be found here:" $CREDS
     echo ""

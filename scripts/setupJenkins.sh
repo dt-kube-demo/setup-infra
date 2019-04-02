@@ -12,7 +12,7 @@ then
   echo "============================================="
   echo "Missing 'deployment type' argument."
   echo "Usage:"
-  echo "./0-InstallTools.sh <deployment type>"
+  echo "./setupJenkins.sh <deployment type>"
   echo "valid deployment types are: ocp eks gcp aks"
   echo "=============================================" 
   echo ""

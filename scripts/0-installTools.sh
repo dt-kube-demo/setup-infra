@@ -1,6 +1,4 @@
 #!/bin/bash
-# Adjusted to accomodate OpenShift Container Platform
-
 LOG_LOCATION=./logs
 exec > >(tee -i $LOG_LOCATION/0-installTools.log)
 exec 2>&1
@@ -34,6 +32,14 @@ if [ $OK -eq 0 ]; then
   exit 1
 fi
 
+export DEPLOYMENT=$1
+clear
+echo "===================================================="
+echo "About to install required tools"
+echo "Deployment Type: $DEPLOYMENT"
+echo ""
+read -rsp $'Press ctrl-c to abort. Press any key to continue...\n====================================================' -n1 key
+
 # save current directory for restoration later in script
 CURRENT_DIR=$(pwd)
 
@@ -44,16 +50,6 @@ echo "export PATH=$HOME/bin:$PATH" >> ~/.bashrc
 
 # change to users home directory
 cd ~
-
-export DEPLOYMENT=$1
-clear
-echo "===================================================="
-echo "About to install required tools"
-echo "Deployment Type: $DEPLOYMENT"
-echo "Install path:"
-pwd
-echo ""
-read -rsp $'Press ctrl-c to abort. Press any key to continue...\n====================================================' -n1 key
 
 # Installation of hub
 if ! [ -x "$(command -v hub)" ]; then
@@ -123,6 +119,25 @@ if [ $DEPLOYMENT == eks ]; then
     echo "Installing 'terraform' ..."
     unzip terraform_0.11.13_linux_amd64.zip
     sudo cp terraform $HOME/bin/terraform
+  fi
+fi
+
+# Installation of Azure tools
+# https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-yum?view=azure-cli-latest
+
+if [ $DEPLOYMENT == aks ]; then
+  if ! [ -x "$(command -v az)" ]; then
+    echo "----------------------------------------------------"
+    echo "Import the Microsoft repository key ..."
+    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+    echo "Create local azure-cli repository information ..."
+    sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
+    echo "Install azure-cli ..."
+    sudo yum install azure-cli
+    echo "Login to Azure ..."
+    az login
+    echo "Update the Azure CLI ..."
+    sudo yum update azure-cli
   fi
 fi
 

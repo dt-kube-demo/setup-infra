@@ -10,5 +10,8 @@
     "githubUserEmail": "GITHUB_USER_EMAIL_PLACEHOLDER",
     "githubOrg": "GITHUB_ORG_PLACEHOLDER",
     "registry": "robjahn",
-    "registryToken": ""
+    "registryToken": "",
+    "azureSubscription": "AZURE_SUBSCRIPTION_PLACEHOLDER",
+    "azureLocation": "AZURE_LOCATION_PLACEHOLDER",
+    "azureOwnerName": "AZURE_OWNER_NAME_PLACEHOLDER"
 }

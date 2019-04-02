@@ -11,7 +11,7 @@ then
   echo "============================================="
   echo "Missing 'deployment type' argument."
   echo "Usage:"
-  echo "./0-InstallTools.sh <deployment type>"
+  echo "./validatePrerequisites.sh <deployment type>"
   echo "valid deployment types are: ocp eks gcp aks"
   echo "=============================================" 
   echo ""
@@ -33,9 +33,9 @@ if [ $OK -eq 0 ]; then
   exit 1
 fi
 
-echo "-----------------------------------------------------------------"
+echo "=============================================================================="
 echo "Validating Common pre-requisites"
-echo "-----------------------------------------------------------------"
+echo "=============================================================================="
 echo -n "Validating jq utility				"
 type jq &> /dev/null
 if [ $? -ne 0 ]; then
@@ -66,6 +66,7 @@ if [ $? -ne 0 ]; then
 fi
 echo "ok	$(command -v kubectl)"
 
+# openshift tools
 echo ""
 if [ $DEPLOYMENT == ocp ]; then
   echo "-----------------------------------------------------------------"
@@ -82,6 +83,7 @@ if [ $DEPLOYMENT == ocp ]; then
   echo "ok	$(command -v oc)"
 fi
 
+# AWS tools
 if [ $DEPLOYMENT == eks ]; then
   echo "-----------------------------------------------------------------"
   echo "Validating EKS pre-requisites"
@@ -125,7 +127,23 @@ if [ $DEPLOYMENT == eks ]; then
   fi
   echo "ok	AWS cli is configured with UserId: $AWS_STS_USER"
 fi
-  
-echo "-----------------------------------------------------------------"
+
+# Azure tools
+if [ $DEPLOYMENT == aks ]; then
+  echo "-----------------------------------------------------------------"
+  echo "Validating Azure pre-requisites"
+  echo "-----------------------------------------------------------------"
+  echo -n "Validating az		         		"
+  type az &> /dev/null
+  if [ $? -ne 0 ]; then
+    echo "Error"
+    echo ">>> Missing 'az'"
+    echo ""
+    exit 1
+  fi
+  echo "ok      $(az --version | head -n 1)"
+fi
+
+echo "=============================================================================="
 echo "Validation of pre-requisites complete"
-echo "-----------------------------------------------------------------"
+echo "=============================================================================="
