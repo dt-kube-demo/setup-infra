@@ -69,6 +69,6 @@ fi
 
 mkdir -p ../manifests/gen/dynatrace
 curl -o ../manifests/gen/dynatrace/cr.yml https://raw.githubusercontent.com/Dynatrace/dynatrace-oneagent-operator/$DT_LATEST_RELEASE/deploy/cr.yaml
-cat ../manifests/gen/dynatrace/cr.yml | sed 's/ENVIRONMENTID/'"$DT_TENANT_ID"'/' >> ../manifests/gen/cr.yml
+cat ../manifests/gen/dynatrace/cr.yml | sed 's/ENVIRONMENTID.live.dynatrace.com/'"$DT_TENANT_ID"'/' >> ../manifests/gen/cr.yml
 
 kubectl create -f ../manifests/gen/cr.yml
