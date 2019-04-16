@@ -23,7 +23,7 @@ echo "Checking if $DT_ZONE_NAME exists ..."
 echo "----------------------------------------------------"
 export DT_ID=
 export DT_ID=$(curl -X GET \
-  "https://$DT_TENANT_ID.live.dynatrace.com/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_ID/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   | jq -r '.values[] | select(.name == "'$DT_ZONE_NAME'") | .id')
@@ -35,7 +35,7 @@ then
   echo "Deleting $DT_ZONE_NAME since exists ..."
   echo "----------------------------------------------------"
   curl -X DELETE \
-  "https://$DT_TENANT_ID.live.dynatrace.com/api/config/v1/managementZones/$DT_ID?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_ID/api/config/v1/managementZones/$DT_ID?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache'
 fi
@@ -44,7 +44,7 @@ echo "----------------------------------------------------"
 echo "Adding $DT_ZONE_NAME ..."
 echo "----------------------------------------------------"
 curl -X POST \
-  "https://$DT_TENANT_ID.live.dynatrace.com/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_ID/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -82,7 +82,7 @@ echo "Checking if $DT_ZONE_NAME exists ..."
 echo "----------------------------------------------------"
 export DT_ID=
 export DT_ID=$(curl -X GET \
-  "https://$DT_TENANT_ID.live.dynatrace.com/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_ID/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   | jq -r '.values[] | select(.name == "'$DT_ZONE_NAME'") | .id')
@@ -94,7 +94,7 @@ then
   echo "Deleting $DT_ZONE_NAME since exists ..."
   echo "----------------------------------------------------"
   curl -X DELETE \
-  "https://$DT_TENANT_ID.live.dynatrace.com/api/config/v1/managementZones/$DT_ID?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_ID/api/config/v1/managementZones/$DT_ID?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache'
 fi
@@ -103,7 +103,7 @@ echo "----------------------------------------------------"
 echo "Adding $DT_ZONE_NAME ..."
 echo "----------------------------------------------------"
 curl -X POST \
-  "https://$DT_TENANT_ID.live.dynatrace.com/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_ID/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
