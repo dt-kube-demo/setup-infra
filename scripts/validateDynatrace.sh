@@ -11,7 +11,7 @@ echo "==========================="
 export DT_TENANT_ID=$(cat creds.json | jq -r '.dynatraceTenant')
 export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
 export DT_PAAS_TOKEN=$(cat creds.json | jq -r '.dynatracePaaSToken')
-export DT_TENANT_URL="$DT_TENANT_ID.live.dynatrace.com"
+
 
 if [ $DT_TENANT_ID == "DYNATRACE_TENANT_PLACEHOLDER" ]
 then
@@ -33,7 +33,7 @@ echo ""
 echo "----------------------------------------------------------"
 echo Validating Dynatrace PaaS token is configured properly ...
 echo "----------------------------------------------------------"
-export DT_URL="https://$DT_TENANT_ID.live.dynatrace.com/api/v1/time?Api-Token=$DT_PAAS_TOKEN"
+export DT_URL="https://$DT_TENANT_ID/api/v1/time?Api-Token=$DT_PAAS_TOKEN"
 if [ "$(curl -sL -w '%{http_code}' $DT_URL -o /dev/null)" != "200" ]
 
 then
@@ -46,7 +46,7 @@ echo ""
 echo "----------------------------------------------------------"
 echo Validating Dynatrace API token is configured properly ...
 echo "----------------------------------------------------------"
-export DT_URL="https://$DT_TENANT_ID.live.dynatrace.com/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN"
+export DT_URL="https://$DT_TENANT_ID/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN"
 if [ "$(curl -sL -w '%{http_code}' $DT_URL -o /dev/null)" != "200" ]
 then
     echo ">>> Unable to connect using API Token.  Verify you have the right API Token"
