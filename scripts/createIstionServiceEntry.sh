@@ -4,7 +4,7 @@ LOG_LOCATION=./logs
 exec > >(tee -i $LOG_LOCATION/createIstionServiceEntry.log)
 exec 2>&1
 
-entries=$(curl https://$1.live.dynatrace.com/api/v1/deployment/installer/agent/connectioninfo?Api-Token=$2 | jq -r '.communicationEndpoints[]')
+entries=$(curl https://$1/api/v1/deployment/installer/agent/connectioninfo?Api-Token=$2 | jq -r '.communicationEndpoints[]')
 
 mkdir se_tmp
 touch se_tmp/hosts
@@ -13,8 +13,8 @@ touch se_tmp/service_entries
 
 cat ../manifests/istio/service_entries_tpl/part1 >> se_tmp/service_entries_oneagent.yml
 
-echo -e "  - $1.live.dynatrace.com" >> se_tmp/hosts
-cat ../manifests/istio/service_entry_tmpl | sed 's~ENDPOINT_PLACEHOLDER~'"$1"'.live.dynatrace.com~' >> se_tmp/service_entries
+echo -e "  - $1" >> se_tmp/hosts
+cat ../manifests/istio/service_entry_tmpl | sed 's~ENDPOINT_PLACEHOLDER~'"$1"'~' >> se_tmp/service_entries
 
 for row in $entries; do
     row=$(echo $row | sed 's~https://~~')
