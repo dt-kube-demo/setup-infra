@@ -24,7 +24,7 @@ clear
 echo "==================================================================="
 echo -e "${YLW}Please enter the values as requested below: ${NC}"
 echo "==================================================================="
-read -p "Dynatrace Tenant ID (8-digits) (current: $DT_TENANT_ID) : " DT_TENANT_ID_NEW
+read -p "Dynatrace Tenant ID (foo.dynatracedomain.com) (current: $DT_TENANT_ID) : " DT_TENANT_ID_NEW
 read -p "Dynatrace API Token            (current: $DT_API_TOKEN) : " DT_API_TOKEN_NEW
 read -p "Dynatrace PaaS Token           (current: $DT_PAAS_TOKEN) : " DT_PAAS_TOKEN_NEW
 read -p "GitHub User Name               (current: $GITHUB_USER_NAME) : " GITHUB_USER_NAME_NEW
