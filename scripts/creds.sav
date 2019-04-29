@@ -2,7 +2,7 @@
     "jenkinsPort": "24711",
     "jenkinsUser": "admin",
     "jenkinsPassword": "AiTx4u8VyUV8tCKk",
-    "dynatraceTenant": "DYNATRACE_TENANT_PLACEHOLDER",
+    "dynatraceBaseURL": "DYNATRACE_BASEURL_PLACEHOLDER",
     "dynatraceApiToken": "DYNATRACE_API_TOKEN",
     "dynatracePaaSToken": "DYNATRACE_PAAS_TOKEN",
     "githubUserName": "GITHUB_USER_NAME_PLACEHOLDER",

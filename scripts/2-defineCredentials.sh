@@ -11,7 +11,7 @@ CREDS=./creds.json
 
 if [ -f "$CREDS" ]
 then
-    export DT_TENANT_ID=$(cat creds.json | jq -r '.dynatraceTenant')
+    export DT_TENANT_BASE_URL=$(cat creds.json | jq -r '.dynatraceBaseURL')
     export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
     export DT_PAAS_TOKEN=$(cat creds.json | jq -r '.dynatracePaaSToken')
     export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat creds.json | jq -r '.githubPersonalAccessToken')
@@ -24,17 +24,17 @@ clear
 echo "==================================================================="
 echo -e "${YLW}Please enter the values as requested below: ${NC}"
 echo "==================================================================="
-read -p "Dynatrace Tenant ID (foo.dynatracedomain.com) (current: $DT_TENANT_ID) : " DT_TENANT_ID_NEW
-read -p "Dynatrace API Token            (current: $DT_API_TOKEN) : " DT_API_TOKEN_NEW
-read -p "Dynatrace PaaS Token           (current: $DT_PAAS_TOKEN) : " DT_PAAS_TOKEN_NEW
-read -p "GitHub User Name               (current: $GITHUB_USER_NAME) : " GITHUB_USER_NAME_NEW
-read -p "GitHub Personal Access Token   (current: $GITHUB_PERSONAL_ACCESS_TOKEN) : " GITHUB_PERSONAL_ACCESS_TOKEN_NEW
-read -p "GitHub User Email              (current: $GITHUB_USER_EMAIL) : " GITHUB_USER_EMAIL_NEW
-read -p "GitHub Organization            (current: $GITHUB_ORGANIZATION) : " GITHUB_ORGANIZATION_NEW
+read -p "Dynatrace Tenant ID (foo.dynatracedomain.com) (current: $DT_TENANT_BASE_URL) : " DT_TENANT_BASE_URL_NEW
+read -p "Dynatrace API Token                           (current: $DT_API_TOKEN) : " DT_API_TOKEN_NEW
+read -p "Dynatrace PaaS Token                          (current: $DT_PAAS_TOKEN) : " DT_PAAS_TOKEN_NEW
+read -p "GitHub User Name                              (current: $GITHUB_USER_NAME) : " GITHUB_USER_NAME_NEW
+read -p "GitHub Personal Access Token                  (current: $GITHUB_PERSONAL_ACCESS_TOKEN) : " GITHUB_PERSONAL_ACCESS_TOKEN_NEW
+read -p "GitHub User Email                             (current: $GITHUB_USER_EMAIL) : " GITHUB_USER_EMAIL_NEW
+read -p "GitHub Organization                           (current: $GITHUB_ORGANIZATION) : " GITHUB_ORGANIZATION_NEW
 echo "==================================================================="
 echo ""
 # set value to new input or default to current value
-DT_TENANT_ID=${DT_TENANT_ID_NEW:-$DT_TENANT_ID}
+DT_TENANT_BASE_URL=${DT_TENANT_BASE_URL_NEW:-$DT_TENANT_BASE_URL}
 DT_API_TOKEN=${DT_API_TOKEN_NEW:-$DT_API_TOKEN}
 DT_PAAS_TOKEN=${DT_PAAS_TOKEN_NEW:-$DT_PAAS_TOKEN}
 GITHUB_USER_NAME=${GITHUB_USER_NAME_NEW:-$GITHUB_USER_NAME}
@@ -43,7 +43,7 @@ GITHUB_USER_EMAIL=${GITHUB_USER_EMAIL_NEW:-$GITHUB_USER_EMAIL}
 GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION_NEW:-$GITHUB_ORGANIZATION}
 
 echo -e "${YLW}Please confirm all are correct: ${NC}"
-echo "Dynatrace Tenant: $DT_TENANT_ID"
+echo "Dynatrace Tenant: $DT_TENANT_BASE_URL"
 echo "Dynatrace API Token: $DT_API_TOKEN"
 echo "Dynatrace PaaS Token: $DT_PAAS_TOKEN"
 echo "GitHub User Name: $GITHUB_USER_NAME"
@@ -58,7 +58,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     cp $CREDS $CREDS.bak 2> /dev/null
     rm $CREDS 2> /dev/null
-    cat ./creds.sav | sed 's~DYNATRACE_TENANT_PLACEHOLDER~'"$DT_TENANT_ID"'~' | \
+    cat ./creds.sav | sed 's~DYNATRACE_BASEURL_PLACEHOLDER~'"$DT_TENANT_BASE_URL"'~' | \
       sed 's~DYNATRACE_API_TOKEN~'"$DT_API_TOKEN"'~' | \
       sed 's~DYNATRACE_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' | \
       sed 's~GITHUB_USER_NAME_PLACEHOLDER~'"$GITHUB_USER_NAME"'~' | \

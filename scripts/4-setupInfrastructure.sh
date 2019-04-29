@@ -97,7 +97,7 @@ sleep 150
 
 #echo "----------------------------------------------------"
 #echo "Deploying Istio ..."
-#./setupIstio.sh $DT_TENANT_ID $DT_PAAS_TOKEN
+#./setupIstio.sh $DT_TENANT_BASE_URL $DT_PAAS_TOKEN
 
 echo "===================================================="
 echo "Finished setting up demo app infrastructure "

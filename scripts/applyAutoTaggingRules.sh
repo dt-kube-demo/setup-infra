@@ -7,12 +7,12 @@ exec > >(tee -i $LOG_LOCATION/applyAutoTaggingRules.log)
 exec 2>&1
 
 
-export DT_TENANT_ID=$(cat creds.json | jq -r '.dynatraceTenant')
+export DT_TENANT_BASE_URL=$(cat creds.json | jq -r '.dynatraceBaseURL')
 export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
 
 echo "----------------------------------------------------"
 echo "Setting up auto tagging rules in your Dynatrace tenant."
-echo DT_TENANT_ID = $DT_TENANT_ID
+echo DT_TENANT_BASE_URL = $DT_TENANT_BASE_URL
 echo DT_API_TOKEN = $DT_API_TOKEN
 
 export DT_RULE_NAME=dt-kube-demo-service
@@ -24,7 +24,7 @@ echo "Checking if $DT_RULE_NAME exists ..."
 echo "----------------------------------------------------"
 export DT_ID=
 export DT_ID=$(curl -X GET \
-  "https://$DT_TENANT_ID/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_BASE_URL/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   | jq -r '.values[] | select(.name == "'$DT_RULE_NAME'") | .id')
@@ -36,7 +36,7 @@ then
   echo "Deleting $DT_RULE_NAME since exists (ID = $DT_ID) ..."
   echo "----------------------------------------------------"
   curl -X DELETE \
-  "https://$DT_TENANT_ID/api/config/v1/autoTags/$DT_ID?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_BASE_URL/api/config/v1/autoTags/$DT_ID?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache'
 fi
@@ -45,7 +45,7 @@ echo "----------------------------------------------------"
 echo "Adding $DT_RULE_NAME ..."
 echo "----------------------------------------------------"
 curl -X POST \
-  "https://$DT_TENANT_ID/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_BASE_URL/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -86,7 +86,7 @@ echo "Checking if $DT_RULE_NAME exists ..."
 echo "----------------------------------------------------"
 export DT_ID=
 export DT_ID=$(curl -X GET \
-  "https://$DT_TENANT_ID/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_BASE_URL/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   | jq -r '.values[] | select(.name == "'$DT_RULE_NAME'") | .id')
@@ -98,7 +98,7 @@ then
   echo "Deleting $DT_RULE_NAME since exists (ID = $DT_ID) ..."
   echo "----------------------------------------------------"
   curl -X DELETE \
-  "https://$DT_TENANT_ID/api/config/v1/autoTags/$DT_ID?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_BASE_URL/api/config/v1/autoTags/$DT_ID?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache'
 fi
@@ -107,7 +107,7 @@ echo "----------------------------------------------------"
 echo "Adding $DT_RULE_NAME ..."
 echo "----------------------------------------------------"
 curl -X POST \
-  "https://$DT_TENANT_ID/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_BASE_URL/api/config/v1/autoTags?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
