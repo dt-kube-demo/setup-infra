@@ -24,13 +24,13 @@ clear
 echo "==================================================================="
 echo -e "${YLW}Please enter the values as requested below: ${NC}"
 echo "==================================================================="
-read -p "Dynatrace Tenant ID (foo.dynatracedomain.com) (current: $DT_TENANT_BASE_URL) : " DT_TENANT_BASE_URL_NEW
-read -p "Dynatrace API Token                           (current: $DT_API_TOKEN) : " DT_API_TOKEN_NEW
-read -p "Dynatrace PaaS Token                          (current: $DT_PAAS_TOKEN) : " DT_PAAS_TOKEN_NEW
-read -p "GitHub User Name                              (current: $GITHUB_USER_NAME) : " GITHUB_USER_NAME_NEW
-read -p "GitHub Personal Access Token                  (current: $GITHUB_PERSONAL_ACCESS_TOKEN) : " GITHUB_PERSONAL_ACCESS_TOKEN_NEW
-read -p "GitHub User Email                             (current: $GITHUB_USER_EMAIL) : " GITHUB_USER_EMAIL_NEW
-read -p "GitHub Organization                           (current: $GITHUB_ORGANIZATION) : " GITHUB_ORGANIZATION_NEW
+read -p "Dynatrace Tenant ID (e.g. abc12345.live.dynatrace.com) (current: $DT_TENANT_BASE_URL) : " DT_TENANT_BASE_URL_NEW
+read -p "Dynatrace API Token                                    (current: $DT_API_TOKEN) : " DT_API_TOKEN_NEW
+read -p "Dynatrace PaaS Token                                   (current: $DT_PAAS_TOKEN) : " DT_PAAS_TOKEN_NEW
+read -p "GitHub User Name                                       (current: $GITHUB_USER_NAME) : " GITHUB_USER_NAME_NEW
+read -p "GitHub Personal Access Token                           (current: $GITHUB_PERSONAL_ACCESS_TOKEN) : " GITHUB_PERSONAL_ACCESS_TOKEN_NEW
+read -p "GitHub User Email                                      (current: $GITHUB_USER_EMAIL) : " GITHUB_USER_EMAIL_NEW
+read -p "GitHub Organization                                    (current: $GITHUB_ORGANIZATION) : " GITHUB_ORGANIZATION_NEW
 echo "==================================================================="
 echo ""
 # set value to new input or default to current value
