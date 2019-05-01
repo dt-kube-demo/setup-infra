@@ -34,7 +34,7 @@ if [ $OK -eq 0 ]; then
   exit 1
 fi
 
-export DT_TENANT_BASE_URL=$(cat creds.json | jq -r '.dynatraceBaseURL')
+export DT_TENANT_HOSTNAME=$(cat creds.json | jq -r '.dynatraceHostName')
 export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
 export DT_PAAS_TOKEN=$(cat creds.json | jq -r '.dynatracePaaSToken')
 
@@ -69,6 +69,6 @@ fi
 
 mkdir -p ../manifests/gen/dynatrace
 curl -o ../manifests/gen/dynatrace/cr.yml https://raw.githubusercontent.com/Dynatrace/dynatrace-oneagent-operator/$DT_LATEST_RELEASE/deploy/cr.yaml
-cat ../manifests/gen/dynatrace/cr.yml | sed 's/ENVIRONMENTID.live.dynatrace.com/'"$DT_TENANT_BASE_URL"'/' >> ../manifests/gen/cr.yml
+cat ../manifests/gen/dynatrace/cr.yml | sed 's/ENVIRONMENTID.live.dynatrace.com/'"$DT_TENANT_HOSTNAME"'/' >> ../manifests/gen/cr.yml
 
 kubectl create -f ../manifests/gen/cr.yml

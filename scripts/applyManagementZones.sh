@@ -5,12 +5,12 @@ LOG_LOCATION=./logs
 exec > >(tee -i $LOG_LOCATION/applyManagementZones.log)
 exec 2>&1
 
-export DT_TENANT_BASE_URL=$(cat creds.json | jq -r '.dynatraceBaseURL')
+export DT_TENANT_HOSTNAME=$(cat creds.json | jq -r '.dynatraceHostName')
 export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
 
 echo "----------------------------------------------------"
 echo "Apply auto tagging rules in Dynatrace ..."
-echo DT_TENANT_BASE_URL = $DT_TENANT_BASE_URL
+echo DT_TENANT_HOSTNAME = $DT_TENANT_HOSTNAME
 echo DT_API_TOKEN = $DT_API_TOKEN
 echo "----------------------------------------------------"
 
@@ -23,7 +23,7 @@ echo "Checking if $DT_ZONE_NAME exists ..."
 echo "----------------------------------------------------"
 export DT_ID=
 export DT_ID=$(curl -X GET \
-  "https://$DT_TENANT_BASE_URL/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_HOSTNAME/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   | jq -r '.values[] | select(.name == "'$DT_ZONE_NAME'") | .id')
@@ -35,7 +35,7 @@ then
   echo "Deleting $DT_ZONE_NAME since exists ..."
   echo "----------------------------------------------------"
   curl -X DELETE \
-  "https://$DT_TENANT_BASE_URL/api/config/v1/managementZones/$DT_ID?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_HOSTNAME/api/config/v1/managementZones/$DT_ID?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache'
 fi
@@ -44,7 +44,7 @@ echo "----------------------------------------------------"
 echo "Adding $DT_ZONE_NAME ..."
 echo "----------------------------------------------------"
 curl -X POST \
-  "https://$DT_TENANT_BASE_URL/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_HOSTNAME/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -82,7 +82,7 @@ echo "Checking if $DT_ZONE_NAME exists ..."
 echo "----------------------------------------------------"
 export DT_ID=
 export DT_ID=$(curl -X GET \
-  "https://$DT_TENANT_BASE_URL/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_HOSTNAME/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   | jq -r '.values[] | select(.name == "'$DT_ZONE_NAME'") | .id')
@@ -94,7 +94,7 @@ then
   echo "Deleting $DT_ZONE_NAME since exists ..."
   echo "----------------------------------------------------"
   curl -X DELETE \
-  "https://$DT_TENANT_BASE_URL/api/config/v1/managementZones/$DT_ID?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_HOSTNAME/api/config/v1/managementZones/$DT_ID?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache'
 fi
@@ -103,7 +103,7 @@ echo "----------------------------------------------------"
 echo "Adding $DT_ZONE_NAME ..."
 echo "----------------------------------------------------"
 curl -X POST \
-  "https://$DT_TENANT_BASE_URL/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
+  "https://$DT_TENANT_HOSTNAME/api/config/v1/managementZones?Api-Token=$DT_API_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
