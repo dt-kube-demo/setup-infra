@@ -24,3 +24,4 @@ pipelines/gen/*.bak
 
 # any misc logs
 *.log
+notes

@@ -65,11 +65,10 @@ Within the VM, run these commands to clone the setup repo.
 
 ```
 git clone https://github.com/dt-kube-demo/setup-infra.git
-
 cd setup-infra
 ```
 
-Now proceed to the [Provision Cluster and onboard the Orders application](README.md#provision-cluster-and-onboard-the-orders-application) steps.
+Finally, proceed to the [Provision Cluster, Install Keptn, and onboard the Orders application](README.md#bastion-host-setup) step.
 
 # Delete the bastion host
 
