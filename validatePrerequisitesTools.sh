@@ -8,16 +8,6 @@ validate_deployment_argument $DEPLOYMENT
 echo "=============================================================================="
 echo "Validating Common pre-requisites"
 echo "=============================================================================="
-echo -n "keptn utility     "
-command -v keptn &> /dev/null
-if [ $? -ne 0 ]; then
-    echo "Error"
-    echo ">>> Missing 'keptn' utility"
-    echo ""
-    exit 1
-fi
-echo "ok	$(command -v keptn)"
-
 echo -n "helm utility      "
 command -v helm &> /dev/null
 if [ $? -ne 0 ]; then

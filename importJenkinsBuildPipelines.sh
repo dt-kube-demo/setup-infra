@@ -26,17 +26,17 @@ export JENKINS_URL_PORT=$(kubectl get service jenkins -n cicd -o=json | jq -r '.
 
 
 # clean up generated file.  dont delete the README!
-rm -f ../pipelines/gen/*.xml
-rm -f ../pipelines/gen/*.bak
+rm -f ./pipelines/gen/*.xml
+rm -f ./pipelines/gen/*.bak
 
 # copy the job templates to gen folder
-cp ../pipelines/deploy*.xml ../pipelines/gen/
-cp ../pipelines/load*.xml ../pipelines/gen/
+cp ./pipelines/deploy*.xml ./pipelines/gen/
+cp ./pipelines/load*.xml ./pipelines/gen/
 
 # have an optional argument for importing build pipelines. 
 if [ $2 = "build" ]
 then
-  cp ../pipelines/build*.xml ../pipelines/gen/
+  cp ./pipelines/build*.xml ./pipelines/gen/
   JOBLIST="build-order-service build-catalog-service build-customer-service build-front-end deploy-service deploy-staging deploy-production load-test"
 else
   JOBLIST="deploy-staging deploy-production deploy-service load-test"
@@ -56,9 +56,9 @@ for JOB_NAME in $JOBLIST; do
   # update each copy of the job template file in gen folder with GIT org name
   # NOTE: Mac requires the name of backup file as an argument, Linux does not
   if [ $OSTYPE = "Darwin" ]; then
-    sed -i .bak s/ORG_PLACEHOLDER/$ORG/g ../pipelines/gen/$JOB_NAME.xml
+    sed -i .bak s/ORG_PLACEHOLDER/$ORG/g ./pipelines/gen/$JOB_NAME.xml
   else
-    sed -i s/ORG_PLACEHOLDER/$ORG/g ../pipelines/gen/$JOB_NAME.xml
+    sed -i s/ORG_PLACEHOLDER/$ORG/g ./pipelines/gen/$JOB_NAME.xml
   fi
 
   # determine if need to delete job first
@@ -70,5 +70,5 @@ for JOB_NAME in $JOBLIST; do
 
   # add the job
   echo Creating job $JOB_NAME ...
-  curl -s -XPOST http://$JENKINS_URL:$JENKINS_URL_PORT/createItem?name=$JOB_NAME --user $JENKINS_USER:$JENKINS_PASSWORD --data-binary @../pipelines/gen/$JOB_NAME.xml -H "Content-Type:text/xml"
+  curl -s -XPOST http://$JENKINS_URL:$JENKINS_URL_PORT/createItem?name=$JOB_NAME --user $JENKINS_USER:$JENKINS_PASSWORD --data-binary @./pipelines/gen/$JOB_NAME.xml -H "Content-Type:text/xml"
 done

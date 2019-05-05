@@ -13,7 +13,6 @@ DEPLOYMENT=$1
 validate_deployment_argument $DEPLOYMENT
 
 # specify versions to install
-KEPTN_CLI_VERSION=0.2.0
 HUB_VERSION=2.11.1
 HELM_VERSION=2.12.3
 # eks
@@ -34,7 +33,6 @@ echo "      if the utility finds a value when running 'command -v <utility>'"
 echo "      that utility will be concidered already installed"
 echo ""
 echo "Named Versions to be installed:"
-echo "  KEPTN_CLI_VERSION             : $KEPTN_CLI_VERSION"
 echo "  HUB_VERSION                   : $HUB_VERSION"
 echo "  HELM_VERSION                  : $HELM_VERSION"
 case $DEPLOYMENT in
@@ -46,19 +44,6 @@ case $DEPLOYMENT in
 esac
 echo "======================================================================"
 read -rsp $'Press ctrl-c to abort. Press any key to continue...\n' -n1 key
-
-# Installation of keptn cli
-# https://keptn.sh/docs/0.2.0/reference/cli/
-if ! [ -x "$(command -v keptn)" ]; then
-  echo "----------------------------------------------------"
-  echo "Downloading 'keptn' utility ..."
-  rm -rf keptn-linux*
-  wget https://github.com/keptn/keptn/releases/download/$KEPTN_CLI_VERSION/keptn-linux.tar.gz
-  tar -zxvf keptn-linux.tar.gz
-  echo "Installing 'keptn' utility ..."
-  chmod +x keptn
-  sudo mv keptn /usr/local/bin/keptn
-fi
 
 # Installation of helm
 # https://helm.sh/docs/using_helm/#from-the-binary-releases

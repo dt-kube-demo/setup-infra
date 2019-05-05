@@ -41,15 +41,15 @@ kubectl create -f ./manifests/namespaces.yml
 
 echo "----------------------------------------------------"
 echo "Setting up Jenkins  ..."
-./setupJenkins.sh $DEPLOYMENT
+./installJenkins.sh $DEPLOYMENT
 
 echo "----------------------------------------------------"
 echo "Updating Jenkins PerfSig plugins ..."
 ./upgradeJenkinsPlugins.sh just-perfsig
 
 echo "----------------------------------------------------"
-echo "Letting Jenkins restart [60 seconds] ..."
-sleep 60
+echo "Letting Jenkins restart [150 seconds] ..."
+sleep 150
 
 # add credentials
 ./createJenkinsCredentials.sh
@@ -58,7 +58,7 @@ sleep 60
 ./importJenkinsPipelines.sh $GITHUB_ORGANIZATION
 
 # add Dynatrace Operator
-./setupDynatrace.sh $DEPLOYMENT
+./installDynatrace.sh $DEPLOYMENT
 
 # add Dynatrace Tagging rules
 ./applyAutoTaggingRules.sh

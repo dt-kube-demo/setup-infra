@@ -22,7 +22,6 @@ echo "2)  Enter Installation Script Inputs"
 echo "3)  Provision Kubernetes cluster"
 echo "4)  Setup Demo Services"
 echo "5)  Fork Application Repositories"
-echo "6)  Import Jenkins Build Pipelines"
 echo "----------------------------------------------------"
 echo "10)  Validate Kubectl"
 echo "11)  Validate Prerequisite Tools"
@@ -42,7 +41,7 @@ while [ opt != "" ]
         clear
         case $opt in
         1)
-                ./1-installPrerequisitesTools.sh $DEPLOYMENT  2>&1 | tee logs/1-installPrerequisitesTools.log
+                ./1-installPrerequisiteTools.sh $DEPLOYMENT  2>&1 | tee logs/1-installPrerequisiteTools.log
                 break
                 ;;
         2)
@@ -54,15 +53,11 @@ while [ opt != "" ]
                 break
                 ;;
         4)
-                ./4-setupDemo.sh $DEPLOYMENT 2>&1 | tee logs/4-installKeptn.log
+                ./4-setupDemo.sh $DEPLOYMENT 2>&1 | tee logs/4-setupDemo.log
                 break
                 ;;
         5)
                 ./5-forkApplicationRepositories.sh  2>&1 | tee logs/5-forkApplicationRepositories.log
-                break
-                ;;
-        6)
-                ./7-importJenkinsBuildPipelines.sh  2>&1 | tee logs/7-importJenkinsBuildPipelines.log
                 break
                 ;;
         10)

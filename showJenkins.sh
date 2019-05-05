@@ -1,13 +1,19 @@
 #!/bin/bash
 
+export JENKINS_PORT=$(cat creds.json | jq -r '.jenkinsPort')
 export JENKINS_USER=$(cat creds.json | jq -r '.jenkinsUser')
 export JENKINS_PASSWORD=$(cat creds.json | jq -r '.jenkinsPassword')
 export JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r .status.loadBalancer.ingress[].hostname)
 export JENKINS_URL_PORT=$(kubectl get service jenkins -n cicd -o=json | jq -r '.spec.ports[] | select(.name=="http") | .port')
+
+echo "--------------------------------------------------------------------------"
+echo "kubectl -n cicd get pods"
+echo "--------------------------------------------------------------------------"
+kubectl -n cicd get pods
 echo ""
 echo "--------------------------------------------------------------------------"
 echo "Jenkins is running @"
-echo "$JENKINS_URL"
+echo "$JENKINS_URL:$JENKINS_PORT"
 echo "Admin user           : $JENKINS_USER"
 echo "Admin password       : $JENKINS_PASSWORD"
 echo ""

@@ -1,6 +1,6 @@
 # AWS bastion host overview
 
-Below are instructions for using the gcloud CLI to provison an ubuntu virtual machine on Google. This bastion host will then be used to run the scripts to provision the GKE cluster, keptn, and application setup.
+Below are instructions for using the gcloud CLI to provison an ubuntu virtual machine on Google. This bastion host will then be used to run the scripts to provision the GKE cluster and application setup.
 
 ## 1. Create instance using aws cli
 
@@ -18,7 +18,7 @@ aws ec2 run-instances \
   --instance-type t2.micro \
   --key-name $SSH_KEY  \
   --associate-public-ip-address \
-  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=keptn-orders-bastion}]' \
+  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dt-kube-demo-bastion}]' \
   --region $CLUSTER_REGION
 ```
 
@@ -69,7 +69,7 @@ git clone https://github.com/dt-kube-demo/setup-infra.git
 cd setup-infra
 ```
 
-Now proceed to the [Provision Cluster, Install Keptn, and onboard the Orders application](README.md#provision-cluster-install-keptn-and-onboard-the-orders-application) steps.
+Now proceed to the [Provision Cluster and onboard the Orders application](README.md#provision-cluster-and-onboard-the-orders-application) steps.
 
 # Delete the bastion host
 

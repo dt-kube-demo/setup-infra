@@ -43,7 +43,7 @@ AWS additional tools
 See these instructions for provisioning an ubuntu 16.04 LTS host on the targeted cloud provider.
 * [AWS EC2 instance](AWS.md) 
 
-# Provision Cluster, Install Keptn, and onboard the Orders application
+# Provision Cluster and onboard the Orders application
 
 There are multiple scripts used for the setup and they must be run the right order.  Just run the setup script that will prompt you with menu choices.
 ```
@@ -62,7 +62,6 @@ SETUP MENU
 3)  Provision Kubernetes cluster
 4)  Setup Demo Services
 5)  Fork Application Repositories
-6)  Import Jenkins Build Pipelines
 ----------------------------------------------------
 10)  Validate Kubectl
 11)  Validate Prerequisite Tools
@@ -110,10 +109,6 @@ Internally, this script will:
 1. use the ```hub``` unix git utility to fork each repositories
 1. push each repository to your personal github organization
 
-## 6) Import Jenkins build pipelines
-
-This script will import Jenkins build pipelines for each service of the orders application.  When the build pushed an image to the docker registry, a keptn events will be created which automatically runs the keptn deploy pipeline for that service.
-
 # Other setup related scripts
 
 These are additional scripts available in the 'setup.sh' menu.
@@ -158,7 +153,7 @@ Displays the deployed orders application pods and urls
 
 ## 2) show Jenkins
 
-Displays the Keptn pods and ingress gateway
+Displays the jenkins pods
 
 ## 3) Show Dyntrace
 
