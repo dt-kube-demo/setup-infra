@@ -6,7 +6,7 @@ DEPLOYMENT=$1
 validate_deployment_argument $DEPLOYMENT
 
 # validate that have utlities installed first
-./validatePrerequisites.sh $DEPLOYMENT
+./validatePrerequisiteTools.sh $DEPLOYMENT
 if [ $? -ne 0 ]
 then
   exit 1
@@ -37,7 +37,7 @@ export GITHUB_ORGANIZATION=$(cat creds.json | jq -r '.githubOrg')
 
 echo "----------------------------------------------------"
 echo "Creating K8s namespaces ..."
-kubectl create -f ../manifests/namespaces.yml 
+kubectl create -f ./manifests/namespaces.yml 
 
 echo "----------------------------------------------------"
 echo "Setting up Jenkins  ..."

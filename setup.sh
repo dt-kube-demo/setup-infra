@@ -54,7 +54,7 @@ while [ opt != "" ]
                 break
                 ;;
         4)
-                ./4-setupDemoServices.sh 2>&1 | tee logs/4-installKeptn.log
+                ./4-setupDemo.sh $DEPLOYMENT 2>&1 | tee logs/4-installKeptn.log
                 break
                 ;;
         5)
