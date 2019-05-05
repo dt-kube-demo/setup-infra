@@ -29,15 +29,18 @@ REFERENCE: [aws docs](https://docs.aws.amazon.com/cli/latest/reference/ec2/run-i
 
 ## 2. SSH to the bastion host 
 
-From the aws web console, get the connection string for the VM. Run this command to SSH to the new VM.
+From the aws web console, get the SSH command to connect to the bastion host. For example:
 ```
 ssh -i "<your pem file>.pem" ubuntu@<your host>.compute.amazonaws.com
 ```
 
+REFERENCE: [aws docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstances.html?icmpid=docs_ec2_console)
+
 ## 3. Initialize aws CLI on the bastion
 
-Within the bastion host, run this command to install the aws CLI 
+Within the bastion host, run these commands to install the aws CLI 
 ```
+sudo apt update
 sudo apt install awscli
 ```
 
@@ -61,12 +64,12 @@ When complete, run this command ```aws ec2 describe-instances``` to see your VMs
 Within the VM, run these commands to clone the setup repo.
 
 ```
-git clone https://github.com/keptn-orders/keptn-orders-setup.git
+git clone https://github.com/dt-kube-demo/setup-infra.git
 
-cd keptn-orders-setup
+cd setup-infra
 ```
 
-Now proceed to the [Installation script for ubuntu](README.md#installation-script-for-ubuntu) step and then the 'Provision Cluster, Install Keptn, and onboard the Orders application' steps.
+Now proceed to the [Provision Cluster, Install Keptn, and onboard the Orders application](README.md#provision-cluster-install-keptn-and-onboard-the-orders-application) steps.
 
 # Delete the bastion host
 

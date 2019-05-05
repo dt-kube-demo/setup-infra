@@ -50,7 +50,7 @@ There are multiple scripts used for the setup and they must be run the right ord
 ./setup.sh <deployment type>
 ```
 NOTE: Valid 'deployment type' argument values are:
-* gke = Google
+* eks = AWS
 
 The setup menu should look like this:
 ```
