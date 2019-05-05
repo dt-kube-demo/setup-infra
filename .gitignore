@@ -5,10 +5,10 @@
 repositories
 
 # credentials file with personal tokens
-scripts/creds.json*
+creds.json*
 
 # installation logs
-scripts/logs/*.log
+logs/*.log
 
 # generated manifests
 manifests/gen/
