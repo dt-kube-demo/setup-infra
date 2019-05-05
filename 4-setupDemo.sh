@@ -55,7 +55,7 @@ sleep 150
 ./createJenkinsCredentials.sh
 
 # add Jenkins pipelines
-./importJenkinsPipelines.sh $GITHUB_ORGANIZATION
+./importJenkinsBuildPipelines.sh $GITHUB_ORGANIZATION
 
 # add Dynatrace Operator
 ./installDynatrace.sh $DEPLOYMENT
