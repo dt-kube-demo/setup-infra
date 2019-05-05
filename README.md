@@ -97,11 +97,18 @@ This script at the end will run the 'Validate Kubectl' script.
 
 ## 4) Setup Demo Services
 
-This script will
+This script will:
+* created staging & production namespaces for the orders app
+* install jenkins in the cicd namespaces and setup credentials, environment variables and configure the t-systems performance signature plug-in
+* install the Kubernetes Dynatrace Operator
+* setup autotagging rules in Dynatrace
+* import Jenkins jobs for deploying the application
 
 ## 5) Fork Order application repositories
 
-This will fork the orders application into the github organization you specified when you called 'Enter Installation Script Inputs' step.  
+This is an optional step.  You would need to do this if you plan to build the docker images from source.
+
+This script will fork the orders application into the github organization you specified when you called 'Enter Installation Script Inputs' step.
 
 Internally, this script will:
 1. delete and created a local respositories/ folder
@@ -159,3 +166,7 @@ Displays the jenkins pods
 
 Displays the URL to the running Jenkins server
 
+
+# Deploying the application
+
+Just run the 'deploy-staging' or 'deploy-production' Jenkins job.  You can verify the application is deployed by running the 'show app' helper script which will show you pod status and the application URL.
