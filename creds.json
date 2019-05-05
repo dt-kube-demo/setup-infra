@@ -1,0 +1,22 @@
+{
+    "jenkinsPort": "80",
+    "jenkinsUser": "admin",
+    "jenkinsPassword": "AiTx4u8VyUV8tCKk",
+    "dynatraceTenant": "gan16820",
+    "dynatraceApiToken": "f-Cmq9H3QSOXIAfNNhbQR",
+    "dynatracePaaSToken": "Nr7NkObITaa9GQVnRplWF",
+    "dynatraceHostName": "gan16820.live.dynatrace.com",
+    "githubUserName": "robertjahn",
+    "githubPersonalAccessToken": "7a9d8052dfb52d9b61e2edfdda6daba1eba4783c",
+    "githubUserEmail": "robjahn@gmail.com",
+    "githubOrg": "dt-kube-demo",
+    "registry": "robjahn",
+    "registryToken": "REGISTRY_PLACEHOLDER",
+    "azureSubscription": "2673104e-2246-4e67-a844-b3255a665ebb",
+    "azureResourceGroup": "AZURE_RESOURCE_GROUP_PLACEHOLDER",
+    "azureLocation": "eastus",
+    "gkeProject": "GKE_PROJECT_PLACEHOLDER",
+    "clusterName": "dt-kube-demo-cluster",
+    "clusterZone": "us-west-2",
+    "clusterRegion": "CLUSTER_REGION_PLACEHOLDER"
+}

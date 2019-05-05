@@ -41,7 +41,7 @@ AWS additional tools
 # Bastion host setup
 
 See these instructions for provisioning an ubuntu 16.04 LTS host on the targeted cloud provider.
-* [AZURE EC2 instance](AZURE.md) 
+* [AWS EC2 instance](AWS.md) 
 
 # Provision Cluster, Install Keptn, and onboard the Orders application
 
