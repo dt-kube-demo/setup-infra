@@ -132,6 +132,8 @@ This script will look for the existence of required prerequisite tools.  It does
 
 Fastest way to remove everything is to delete your cluster using this script.  Becare when you run this as to not lose your work.
 
+NOTE: ekscli will report that the delete is done, but review the AWS console too. It seems it takes longer for the eks cluster and the cloudformation script that ekscli creates to actaully be deleted.
+
 # Helpful scripts
 
 These scripts are helpful when using and reviewing status of your environment.  Just run the helper script that will prompt you with menu choices.
