@@ -21,4 +21,4 @@ eksctl utils update-coredns --name=$CLUSTER_NAME --region=$CLUSTER_REGION
 echo "------------------------------------------------------"
 echo "Getting Cluster Credentials"
 echo "------------------------------------------------------"
-az aks get-credentials --resource-group myResourceGroup --name $CLUSTER_NAME
+eksctl utils write-kubeconfig --name=$CLUSTER_NAME --region=$CLUSTER_REGION --set-kubeconfig-context
