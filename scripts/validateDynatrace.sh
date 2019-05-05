@@ -1,12 +1,8 @@
 #!/bin/bash
 
-LOG_LOCATION=./logs
-exec > >(tee -i $LOG_LOCATION/validateDynatrace.log)
-exec 2>&1
-
-echo "==========================="
+echo "-------------------------------------------------------"
 echo Validating Dynatrace 
-echo "==========================="
+echo "-------------------------------------------------------"
 
 export DT_TENANT_HOSTNAME=$(cat creds.json | jq -r '.dynatraceHostName')
 export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
@@ -54,4 +50,8 @@ then
     exit 1
 fi
 echo "Able to connect using Dynatrace API Token."
+echo ""
+echo "-------------------------------------------------------"
+echo Dynatrace valdiation complete
+echo "-------------------------------------------------------"
 echo ""

@@ -1,7 +1,4 @@
 #!/bin/bash
-LOG_LOCATION=./logs
-exec > >(tee -i $LOG_LOCATION/upgradeJenkinsPlugins.log)
-exec 2>&1
 
 export JENKINS_POD=$(kubectl get pods -n cicd -o=json | jq -r .items[].metadata.name)
 export JENKINS_USER=$(cat creds.json | jq -r '.jenkinsUser')

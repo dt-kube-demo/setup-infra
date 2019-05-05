@@ -1,10 +1,6 @@
 #!/bin/bash
 # reference: https://www.dynatrace.com/support/help/extend-dynatrace/dynatrace-api/configuration/management-zones-api/
 
-LOG_LOCATION=./logs
-exec > >(tee -i $LOG_LOCATION/applyManagementZones.log)
-exec 2>&1
-
 export DT_TENANT_HOSTNAME=$(cat creds.json | jq -r '.dynatraceHostName')
 export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
 

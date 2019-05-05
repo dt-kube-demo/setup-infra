@@ -1,13 +1,5 @@
 #!/bin/bash
 
-SOURCE_GIT_ORG=dt-kube-demo
-LOG_LOCATION=./logs
-exec > >(tee -i $LOG_LOCATION/1-forkGitHubRepositories.log)
-exec 2>&1
-
-YLW='\033[1;33m'
-NC='\033[0m'
-
 type hub &> /dev/null
 if [ $? -ne 0 ]
 then
@@ -50,13 +42,13 @@ cd ../repositories
 
 for repo in "${repositories[@]}"
 do
-    echo -e "${YLW}Cloning https://github.com/$SOURCE_GIT_ORG/$repo ${NC}"
+    echo -e "Cloning https://github.com/$SOURCE_GIT_ORG/$repo"
     git clone -q "https://github.com/$SOURCE_GIT_ORG/$repo"
     cd $repo
-    echo -e "${YLW}Forking $repo to $ORG ${NC}"
+    echo -e "Forking $repo to $ORG"
     hub fork --org=$ORG
     cd ..
-    echo -e "${YLW}Done. ${NC}"
+    echo -e "Done."
 done
 
 cd ..
@@ -67,7 +59,7 @@ cd repositories
 for repo in "${repositories[@]}"
 do
     TARGET_REPO="http://github.com/$ORG/$repo"
-    echo -e "${YLW}Cloning $TARGET_REPO ${NC}"
+    echo -e "Cloning $TARGET_REPO"
     git clone -q $TARGET_REPO
-    echo -e "${YLW}Done. ${NC}"
+    echo -e "Done."
 done

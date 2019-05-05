@@ -1,38 +1,9 @@
 #!/bin/bash
 
-LOG_LOCATION=./logs
-exec > >(tee -i $LOG_LOCATION/4-setupInfrastructure.log)
-exec 2>&1
-clear
-
-# Validate Deployment argument
-if [ -z $1 ]
-then
-  echo ""
-  echo "============================================="
-  echo "Missing 'deployment type' argument."
-  echo "Usage:"
-  echo "./0-InstallTools.sh <deployment type>"
-  echo "valid deployment types are: ocp eks gcp aks"
-  echo "=============================================" 
-  echo ""
-  exit 1
-fi
-
-export DEPLOYMENT=$1
-OK=0 ; DEPLOY_TYPES="ocp eks gcp aks"
-for DT in $DEPLOY_TYPES ; do [ $1 == $DT ] && { OK=1 ; break; } ; done
-if [ $OK -eq 0 ]; then
-  echo ""
-  echo "====================================="
-  echo "Missing 'deployment type' argument."
-  echo "Usage:"
-  echo "./4-setupInfrastructure.sh <deployment type>"
-  echo "valid deployment types are: ocp eks gcp aks"
-  echo "====================================="   
-  echo ""
-  exit 1
-fi
+# load in the shared library and validate argument
+source ./deploymentArgument.lib
+DEPLOYMENT=$1
+validate_deployment_argument $DEPLOYMENT
 
 # validate that have utlities installed first
 ./validatePrerequisites.sh $DEPLOYMENT
@@ -94,10 +65,6 @@ sleep 60
 echo "----------------------------------------------------"
 echo "Letting Dynatrace tagging rules be applied [150 seconds] ..."
 sleep 150
-
-#echo "----------------------------------------------------"
-#echo "Deploying Istio ..."
-#./setupIstio.sh $DT_TENANT_HOSTNAME $DT_PAAS_TOKEN
 
 echo "===================================================="
 echo "Finished setting up demo app infrastructure "

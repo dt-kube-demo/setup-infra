@@ -1,39 +1,46 @@
 #!/bin/bash
 
-LOG_LOCATION=./logs
-exec > >(tee -i $LOG_LOCATION/3-provisionInfrastructure.log)
-exec 2>&1
+# load in the shared library and validate argument
+source ./deploymentArgument.lib
+DEPLOYMENT=$1
+validate_deployment_argument $DEPLOYMENT
 
 clear
+START_TIME=$(date)
+case $DEPLOYMENT in
+  eks)
+    ./provisionEks.sh
+    ;;
+  aks)
+    echo "Deploy for $DEPLOYMENT not supported"
+    #./provisionAks.sh
+    ;;
+  ocp)
+    echo "Deploy for $DEPLOYMENT not supported"
+    exit 1
+    ;;
+  gke)
+    echo "Deploy for $DEPLOYMENT not supported"
+    #./provisionGke.sh
+    ;;
+esac
+
+if [[ $? != 0 ]]; then
+  echo ""
+  echo "ABORTING due to provisioning error"
+  exit 1
+fi
+
+# adding some sleep for validateKubectl sometimes fails, if cluster not fully ready
+sleep 20
 
 echo "===================================================="
-echo About to provision AWS Resources
-echo ""
-echo Terraform will evalate the plan then prompt for confirmation
-echo at the prompt, enter 'yes'
-echo The provisioning will take several minutes
-read -rsp $'Press ctrl-c to abort. Press any key to continue...\n====================================================' -n1 key
-
-export START_TIME=$(date)
-
-cd ../terraform
-terraform init
-terraform apply
-
+echo "Finished provisioning $DEPLOYMENT Cluster"
 echo "===================================================="
-echo "Finished provisioning AWS  "
-echo "===================================================="
-echo "Script start time : "$START_TIME
+echo "Script start time : $START_TIME"
 echo "Script end time   : "$(date)
 
-echo ""
-echo "===================================================="
-echo "Copying generated terraform file into kubectl config"
-
-cp kubeconfig-*-cluster.yaml ~/.kube/config
-
 # validate that have kubectl configured first
-cd ../scripts
 ./validateKubectl.sh
 if [ $? -ne 0 ]
 then

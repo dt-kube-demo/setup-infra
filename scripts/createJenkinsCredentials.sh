@@ -1,9 +1,5 @@
 #!/bin/bash
 
-LOG_LOCATION=./logs
-exec > >(tee -i $LOG_LOCATION/createJenkinsCredentials.log)
-exec 2>&1
-
 export JENKINS_USER=$(cat creds.json | jq -r '.jenkinsUser')
 export JENKINS_PASSWORD=$(cat creds.json | jq -r '.jenkinsPassword')
 export GITHUB_USER_NAME=$(cat creds.json | jq -r '.githubUserName')

@@ -1,9 +1,5 @@
 #!/bin/bash
 
-LOG_LOCATION=./logs
-exec > >(tee -i $LOG_LOCATION/showApp.log)
-exec 2>&1
-
 export STAGING_URL=$(kubectl -n staging get svc front-end -o json | jq -r '.status.loadBalancer.ingress[0].hostname')
 export PRODUCTION_URL=$(kubectl -n production get svc front-end -o json | jq -r '.status.loadBalancer.ingress[0].hostname')
 
