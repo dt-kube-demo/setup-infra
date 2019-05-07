@@ -57,7 +57,8 @@ while [ opt != "" ]
                 break
                 ;;
         5)
-                ./5-forkApplicationRepositories.sh  2>&1 | tee logs/5-forkApplicationRepositories.log
+                GITHUB_ORGANIZATION=$(cat creds.json | jq -r '.githubOrg')
+                ./5-forkApplicationRepositories.sh $GITHUB_ORGANIZATION 2>&1 | tee logs/5-forkApplicationRepositories.log
                 break
                 ;;
         10)
