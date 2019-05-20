@@ -2,15 +2,11 @@
 
 clear
 
-if [ -z $1 ]; then
-  DEPLOYMENT=eks
-fi
-
 # once support multiple providers, then add this back
 # load in the shared library and validate argument
-#source ./deploymentArgument.lib
-#DEPLOYMENT=$1
-#validate_deployment_argument $DEPLOYMENT
+source ./deploymentArgument.lib
+DEPLOYMENT=$1
+validate_deployment_argument $DEPLOYMENT
 
 show_menu(){
 echo ""

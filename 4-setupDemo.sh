@@ -32,8 +32,8 @@ echo About to setup demo app infrastructure with these parameters:
 cat creds.json | grep -E "jenkins|dynatrace|github"
 read -rsp $'Press ctrl-c to abort. Press any key to continue...\n====================================================' -n1 key
 
-export START_TIME=$(date)
-export GITHUB_ORGANIZATION=$(cat creds.json | jq -r '.githubOrg')
+START_TIME=$(date)
+GITHUB_ORGANIZATION=$(cat creds.json | jq -r '.githubOrg')
 
 echo "----------------------------------------------------"
 echo "Creating K8s namespaces ..."

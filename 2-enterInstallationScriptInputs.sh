@@ -9,6 +9,7 @@ CREDS=./creds.json
 
 if [ -f "$CREDS" ]
 then
+    DEPLOYMENT=$(cat creds.json | jq -r '.deployment')
     DT_TENANT_ID=$(cat creds.json | jq -r '.dynatraceTenant')
     DT_HOSTNAME=$(cat creds.json | jq -r '.dynatraceHostName')
     DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
@@ -35,7 +36,7 @@ echo "Press <enter> to keep the current value"
 echo "==================================================================="
 echo "Dynatrace Host Name (e.g. abc12345.live.dynatrace.com)"
 read -p "                                       (current: $DT_HOSTNAME) : " DT_HOSTNAME_NEW
-read -p "Dynatrace Tenant ID (8-digits)         (current: $DT_TENANT_ID) : " DT_TENANT_ID_NEW
+read -p "Dynatrace Tenant ID (e.g. abc12345)    (current: $DT_TENANT_ID) : " DT_TENANT_ID_NEW
 read -p "Dynatrace API Token                    (current: $DT_API_TOKEN) : " DT_API_TOKEN_NEW
 read -p "Dynatrace PaaS Token                   (current: $DT_PAAS_TOKEN) : " DT_PAAS_TOKEN_NEW
 read -p "GitHub User Name                       (current: $GITHUB_USER_NAME) : " GITHUB_USER_NAME_NEW
@@ -125,6 +126,7 @@ then
     rm $CREDS 2> /dev/null
 
     cat ./creds.sav | \
+      sed 's~DEPLOYMENT_PLACEHOLDER~'"$DEPLOYMENT"'~' | \
       sed 's~DYNATRACE_TENANT_PLACEHOLDER~'"$DT_TENANT_ID"'~' | \
       sed 's~DYNATRACE_HOSTNAME_PLACEHOLDER~'"$DT_HOSTNAME"'~' | \
       sed 's~DYNATRACE_API_TOKEN_PLACEHOLDER~'"$DT_API_TOKEN"'~' | \

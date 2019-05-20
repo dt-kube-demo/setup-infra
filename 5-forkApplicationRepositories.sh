@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SOURCE_GIT_ORG=dt-kube-demo
+
 type hub &> /dev/null
 if [ $? -ne 0 ]
 then
@@ -34,6 +36,8 @@ echo "Target : https://github.com/$ORG"
 echo ""
 read -rsp $'Press ctrl-c to abort. Press any key to continue...\n====================================================' -n1 key
 
+echo ""
+
 declare -a repositories=("catalog-service" "customer-service" "front-end" "order-service" "deploy")
 
 rm -rf ../repositories
@@ -63,3 +67,5 @@ do
     git clone -q $TARGET_REPO
     echo -e "Done."
 done
+
+echo ""
