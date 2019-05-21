@@ -9,7 +9,11 @@ CREDS=./creds.json
 
 if [ -f "$CREDS" ]
 then
-    DEPLOYMENT=$(cat creds.json | jq -r '.deployment')
+    DEPLOYMENT=$(cat creds.json | jq -r '.deployment | select (.!=null)')
+    if [ -n $DEPLOYMENT ]
+    then 
+      DEPLOYMENT=$1
+    fi
     DT_TENANT_ID=$(cat creds.json | jq -r '.dynatraceTenant')
     DT_HOSTNAME=$(cat creds.json | jq -r '.dynatraceHostName')
     DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
@@ -34,9 +38,9 @@ echo "==================================================================="
 echo "Please enter the values for provider type: $DEPLOYMENT:"
 echo "Press <enter> to keep the current value"
 echo "==================================================================="
-echo "Dynatrace Host Name (e.g. abc12345.live.dynatrace.com)"
-read -p "                                       (current: $DT_HOSTNAME) : " DT_HOSTNAME_NEW
 read -p "Dynatrace Tenant ID (e.g. abc12345)    (current: $DT_TENANT_ID) : " DT_TENANT_ID_NEW
+echo "Dynatrace Host Name"
+read -p "  (e.g. abc12345.live.dynatrace.com)   (current: $DT_HOSTNAME) : " DT_HOSTNAME_NEW
 read -p "Dynatrace API Token                    (current: $DT_API_TOKEN) : " DT_API_TOKEN_NEW
 read -p "Dynatrace PaaS Token                   (current: $DT_PAAS_TOKEN) : " DT_PAAS_TOKEN_NEW
 read -p "GitHub User Name                       (current: $GITHUB_USER_NAME) : " GITHUB_USER_NAME_NEW
@@ -50,9 +54,9 @@ case $DEPLOYMENT in
     read -p "Cluster Region (eg.us-east-1)          (current: $CLUSTER_REGION) : " CLUSTER_REGION_NEW
     ;;
   aks)
-    read -p "Azure Subscription                     (current: $AZURE_SUBSCRIPTION) : " AZURE_SUBSCRIPTION_NEW
-    read -p "Azure Location                         (current: $AZURE_LOCATION) : " AZURE_LOCATION_NEW
-    read -p "Azure Resource Group                   (current: $AZURE_RESOURCE_PREFIX) : " AZURE_RESOURCE_PREFIX_NEW
+    read -p "Azure Subscription ID                  (current: $AZURE_SUBSCRIPTION) : " AZURE_SUBSCRIPTION_NEW
+    read -p "Azure Location (e.g. eastus)           (current: $AZURE_LOCATION) : " AZURE_LOCATION_NEW
+    read -p "Azure Resource Prefix (e.g. lastname)  (current: $AZURE_RESOURCE_PREFIX) : " AZURE_RESOURCE_PREFIX_NEW
     ;;
   gke)
     read -p "Google Project                         (current: $GKE_PROJECT) : " GKE_PROJECT_NEW
@@ -86,8 +90,8 @@ CLUSTER_ZONE=${CLUSTER_ZONE_NEW:-$CLUSTER_ZONE}
 
 echo -e "Please confirm all are correct:"
 echo ""
-echo "Dynatrace Host Name          : $DT_HOSTNAME"
 echo "Dynatrace Tenant             : $DT_TENANT_ID"
+echo "Dynatrace Host Name          : $DT_HOSTNAME"
 echo "Dynatrace API Token          : $DT_API_TOKEN"
 echo "Dynatrace PaaS Token         : $DT_PAAS_TOKEN"
 echo "GitHub User Name             : $GITHUB_USER_NAME"
@@ -102,8 +106,8 @@ case $DEPLOYMENT in
     ;;
   aks)
     echo "Azure Subscription           : $AZURE_SUBSCRIPTION"
-    echo "Azure Resource Group         : $AZURE_RESOURCE_PREFIX"
     echo "Azure Location               : $AZURE_LOCATION"
+    echo "Azure Resource Prefix        : $AZURE_RESOURCE_PREFIX"
     ;;
   gke)
     echo "Google Project               : $GKE_PROJECT"
@@ -134,13 +138,15 @@ then
       sed 's~GITHUB_USER_NAME_PLACEHOLDER~'"$GITHUB_USER_NAME"'~' | \
       sed 's~PERSONAL_ACCESS_TOKEN_PLACEHOLDER~'"$GITHUB_PERSONAL_ACCESS_TOKEN"'~' | \
       sed 's~GITHUB_USER_EMAIL_PLACEHOLDER~'"$GITHUB_USER_EMAIL"'~' | \
-      sed 's~GITHUB_ORG_PLACEHOLDER~'"$GITHUB_ORGANIZATION"'~' | \
-      sed 's~CLUSTER_NAME_PLACEHOLDER~'"$CLUSTER_NAME"'~' | \
-      sed 's~CLUSTER_REGION_PLACEHOLDER~'"$CLUSTER_REGION"'~' | \
-      sed 's~CLUSTER_ZONE_PLACEHOLDER~'"$CLUSTER_ZONE"'~' > $CREDS
+      sed 's~GITHUB_ORG_PLACEHOLDER~'"$GITHUB_ORGANIZATION"'~' > $CREDS
 
     case $DEPLOYMENT in
       eks)
+        cp $CREDS $CREDS.temp
+        cat $CREDS.temp | \
+          sed 's~CLUSTER_NAME_PLACEHOLDER~'"$CLUSTER_NAME"'~' | \
+          sed 's~CLUSTER_REGION_PLACEHOLDER~'"$CLUSTER_REGION"'~' > $CREDS
+        rm $CREDS.temp 2> /dev/null
         ;;
       aks)
         cp $CREDS $CREDS.temp
@@ -153,7 +159,10 @@ then
       gke)
         cp $CREDS $CREDS.temp
         cat $CREDS.temp | \
-          sed 's~GKE_PROJECT_PLACEHOLDER~'"$GKE_PROJECT"'~' > $CREDS
+          sed 's~GKE_PROJECT_PLACEHOLDER~'"$GKE_PROJECT"'~' | \
+          sed 's~CLUSTER_NAME_PLACEHOLDER~'"$CLUSTER_NAME"'~' | \
+          sed 's~CLUSTER_REGION_PLACEHOLDER~'"$CLUSTER_REGION"'~' | \
+          sed 's~CLUSTER_ZONE_PLACEHOLDER~'"$CLUSTER_ZONE"'~' > $CREDS
         rm $CREDS.temp 2> /dev/null
         ;;
       ocp)

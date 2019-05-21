@@ -41,6 +41,9 @@ case $DEPLOYMENT in
     echo "  EKS_KUBECTL_VERSION           : $EKS_KUBECTL_VERSION"
     echo "  EKS_EKSCTL_VERSION            : $EKS_EKSCTL_VERSION"
     ;;
+  aks)
+    echo "  AKS_KUBECTL_VERSION           : $AKS_KUBECTL_VERSION"
+    ;;
 esac
 echo "======================================================================"
 read -rsp $'Press ctrl-c to abort. Press any key to continue...\n' -n1 key
