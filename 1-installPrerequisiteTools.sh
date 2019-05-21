@@ -244,7 +244,7 @@ case $DEPLOYMENT in
     echo "  and then login."
     echo ""
     echo "then run 'az account list'"
-    echo "to show your accounts to verify connection""
+    echo "to show your accounts to verify connection"
     echo "****************************************************"
     echo "****************************************************"
     ;;

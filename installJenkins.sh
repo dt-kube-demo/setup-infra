@@ -48,22 +48,5 @@ echo "----------------------------------------------------"
 echo ""
 sleep 150
 
-case $DEPLOYMENT in
-  aks)
-    echo "----------------------------------------------------"
-    echo "Setting up Jenkins DNS"
-    echo "----------------------------------------------------"
-    echo ""
-    NAMESPACE=cicd
-    SERVICE=jenkins
-    APP_IP_ADDRESS=$(kubectl get service $SERVICE -n $NAMESPACE --output=json | jq .status.loadBalancer.ingress[0].ip)
-    APP_RESOURCE_GROUP_ID=$(az network public-ip list -g $CLUSTER_RESOURCE_GROUP | jq -r ".[] | select(.ipAddress==$APP_IP_ADDRESS) | .id")
-    echo "Assign service: $SERVICE ($APP_IP_ADDRESS) to DNS: $SERVICE-$DNS_NAME"
-    echo "APP_RESOURCE_GROUP_ID: $APP_RESOURCE_GROUP_ID"
-
-    ADD_DNS_RESULT=$(az network public-ip update --dns-name $SERVICE-$DNS_NAME --ids $APP_RESOURCE_GROUP_ID)
-    FQDN=$(echo $ADD_DNS_RESULT | jq -r .dnsSettings.fqdn)
-    echo "Service is reachable at $FQDN"
-    echo ""
-    ;;
-esac
+# configure DNS.
+./configureDemoAppDns.sh
