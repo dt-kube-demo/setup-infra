@@ -29,7 +29,10 @@ echo "Creating Resource group: $AZURE_RESOURCEGROUP"
 echo "------------------------------------------------------"
 az account set -s $AZURE_SUBSCRIPTION
 az group create --name "$AZURE_RESOURCEGROUP" --location $AZURE_LOCATION
-az group list -o table
+az group list show --name "$AZURE_RESOURCEGROUP"
+
+echo "Letting resource group persist properly (10 sec) ..."
+sleep 10 
 
 # need to look up service principal id and then delete it
 # this is outside of the resource group
@@ -109,31 +112,27 @@ jq -n \
 }' > ./aks/parameters.json
 
 echo "------------------------------------------------------"
-echo "About to create cluster with these parameters."
+echo "Creating cluster with these parameters:"
 cat ./aks/parameters.json
 echo 
 echo "AZURE_APPID=$AZURE_APPID"
 echo "AZURE_APPID_SECRET=$AZURE_APPID_SECRET"
 echo "------------------------------------------------------"
 echo "Create Cluster will take several minutes"
-
-read -rsp $'Press ctrl-c to abort. Press any key to continue...\n' -n1 key
 echo ""
 
 cd aks
 sudo ./deploy.sh -i $AZURE_SUBSCRIPTION -g $AZURE_RESOURCEGROUP -n $AZURE_DEPLOYMENTNAME -l $AZURE_LOCATION
 cd ..
 
-echo "------------------------------------------------------"
-echo "Configuring Azure DNS"
-echo "------------------------------------------------------"
-echo ""
-sudo ./configureAzureDns.sh
+echo "Letting cluster persist properly (10 sec) ..."
+sleep 10
 
 echo "Updated Kubectl with credentials"
+echo "az aks get-credentials --resource-group $AZURE_RESOURCEGROUP --name $AZURE_CLUSTER --overwrite-existing"
 az aks get-credentials --resource-group $AZURE_RESOURCEGROUP --name $AZURE_CLUSTER --overwrite-existing
 
-echo "------------------------------------------------------"
+echo "===================================================="
 echo "Azure cluster deployment complete."
-echo "------------------------------------------------------"
+echo "===================================================="
 echo ""
