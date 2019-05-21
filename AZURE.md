@@ -2,14 +2,18 @@
 
 Below are instructions for using the Azure CLI to provison an ubuntu virtual machine on Azure to use for the cluster, keptn, and application setup.
 
-Recommended image is:
+# Create bastion host
+
+These instructions assume you have an Azure subscription and have the AZ CLI installed and configured locally.
+ 
+See [Azure documentation](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest) for local CLI installation and configuration
+
+You can also make the bastion host from the console and then continue with the steps to connect using ssh.  But you must use this image as to have the install scripts be compatible:
 * Ubuntu 16.04 LTS
 
-You can also make the VM from the console, and the continue with the steps to connect using ssh.
+## 1. configure Azure CLI 
 
-# Create instance
-
-Run these commands to configure the Azure CLI [Azure docs](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-create)
+On your laptop, run these commands to configure the Azure CLI [Azure docs](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-create)
 ```
 # login to your account.  This will ask you to open a browser with a code and then login.
 az login
@@ -18,7 +22,9 @@ az login
 az account list --output table
 ```
 
-Run these commands to provision the VM and a resource group
+## 2. Provision bastion host using CLI
+
+On your laptop, run these commands to provision the VM and a resource group
 ```
 # optionally adjust these variables
 export VM_GROUP_NAME=dt-kube-demo-bastion-group
@@ -39,14 +45,14 @@ az vm create \
   --verbose
 ```
 
-# SSH to VM using gcloud
+## 3. SSH bastion host
 
 Goto the Azure console and choose the "connect" menu on the VM row to copy the connection string. Run this command to SSH to the new VM.
 ```
 ssh <your id>@<host ip>
 ```
 
-# Clone the Orders setup repo
+## 4. Clone the Orders setup repo
 
 Within the VM, run these commands to clone the setup repo.
 ```
@@ -55,19 +61,21 @@ cd setup-infra
 ```
 Finally, proceed to the [Provision Cluster, Install Keptn, and onboard the Orders application](README.md#bastion-host-setup) step.
 
-# Delete the Bastion resource group and VM from the Azure console
+# Delete bastion host
 
-On the resource group page, delete the resource group named 'kube-demo-group'. 
-This will delete the bastion host resource group and the VM running in it.
+## Option 1 - delete using azure cli
 
-# Delete the Bastion resource group and VM with the azure cli
-
-from outside the VM, run this command to delete the resource group named 'kube-demo-group'. 
-This will delete the bastion host resource group and the VM running in it.
+From your laptop, run these commands to delete the resource group. 
+This will delete the bastion host resource group and the VM running within it.
 ```
 export VM_GROUP_NAME=dt-kube-demo-bastion-group
 az group delete --name $VM_GROUP_NAME --yes
 ```
+
+## Option 2 - delete from the Azure console
+
+On the resource group page, delete the resource group named 'kube-demo-group'. 
+This will delete the bastion host resource group and the VM running in it.
 
 # az command reference
 

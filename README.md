@@ -58,6 +58,8 @@ NOTE: Valid 'deployment type' argument values are:
 * eks = AWS
 * aks = Azure
 
+NOTE: The ```setup.sh``` script will set your 'deployment type' selection into creds.json file so that you don't have to keep typing it in each time.
+
 The setup menu should look like this:
 ```
 ====================================================
@@ -79,7 +81,6 @@ Please enter your choice or <q> or <return> to exit
 ```
 
 NOTE: each script will log the console output into the ```logs/``` subfolder.
-
 
 ## 1) Install Prerequisites Tools
 

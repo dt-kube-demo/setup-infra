@@ -1,10 +1,22 @@
 # AWS bastion host overview
 
-Below are instructions for using the gcloud CLI to provison an ubuntu virtual machine on Google. This bastion host will then be used to run the scripts to provision the GKE cluster and application setup.
+Below are instructions for using the AWS CLI to provison an ubuntu virtual machine on AWS. This bastion host will then be used to run the scripts to provision the GKE cluster and application setup.
 
-## 1. Create instance using aws cli
+# Create bastion host
 
-Run this commands on your laptop to create the bastion host.
+Part of these instructions assume you have an AWS account and have the AWS CLI installed and configured locally.
+
+See [AWS documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) for local CLI installation and configuration.
+
+You can also make the bastion host from the console and then continue with the steps to connect using ssh.  But you must use this image as to have the install scripts be compatible.
+* Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-08692d171e3cf02d6 (64-bit x86) / ami-05e1b2aec3b47890f (64-bit Arm)
+
+REFERENCE: [aws docs](https://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html)
+
+
+## 1. Provision bastion host using CLI
+
+On your laptop, run these commands to create the bastion host.
 
 ```
 # adjust these variables
@@ -21,11 +33,6 @@ aws ec2 run-instances \
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dt-kube-demo-bastion}]' \
   --region $CLUSTER_REGION
 ```
-
-NOTE: You can also make the bastion host from the console, and the continue with the steps to connect using ssh.  But you must use this image as to have the install scripts be compatible.
-* Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-08692d171e3cf02d6 (64-bit x86) / ami-05e1b2aec3b47890f (64-bit Arm)
-
-REFERENCE: [aws docs](https://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html)
 
 ## 2. SSH to the bastion host 
 
