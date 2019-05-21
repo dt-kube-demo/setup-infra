@@ -1,22 +1,25 @@
 #!/bin/bash
 
-export JENKINS_USER=$(cat creds.json | jq -r '.jenkinsUser')
-export JENKINS_PASSWORD=$(cat creds.json | jq -r '.jenkinsPassword')
-export GITHUB_USER_NAME=$(cat creds.json | jq -r '.githubUserName')
-export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat creds.json | jq -r '.githubPersonalAccessToken')
-export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
-export JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r .status.loadBalancer.ingress[].hostname)
-export JENKINS_URL_PORT=$(kubectl get service jenkins -n cicd -o=json | jq -r '.spec.ports[] | select(.name=="http") | .port')
+JENKINS_USER=$(cat creds.json | jq -r '.jenkinsUser')
+JENKINS_PASSWORD=$(cat creds.json | jq -r '.jenkinsPassword')
+GITHUB_USER_NAME=$(cat creds.json | jq -r '.githubUserName')
+GITHUB_PERSONAL_ACCESS_TOKEN=$(cat creds.json | jq -r '.githubPersonalAccessToken')
+DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
+JENKINS_URL_PORT=$(kubectl get service jenkins -n cicd -o=json | jq -r '.spec.ports[] | select(.name=="http") | .port')
+JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r '.status.loadBalancer.ingress[].hostname | select (.!=null)')
+if [ -n "JENKINS_URL" ]
+then
+  JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r '.status.loadBalancer.ingress[].ip')
+fi
 
-
-export CRED_NAME=registry-creds
+CRED_NAME=registry-creds
 echo "-----------------------------------------------------------------------------------"
 echo "Creating Credential '$CRED_NAME' within Jenkins ..."
 echo "-----------------------------------------------------------------------------------"
 echo "----------------------------------------------------"
 echo "Checking if $CRED_NAME exists ..."
 echo "----------------------------------------------------"
-export CRED_URL="http://$JENKINS_URL:$JENKINS_URL_PORT/credentials/store/system/domain/_/credential/$CRED_NAME/config.xml"
+CRED_URL="http://$JENKINS_URL:$JENKINS_URL_PORT/credentials/store/system/domain/_/credential/$CRED_NAME/config.xml"
 if [ "$(curl -sL -w '%{http_code}' $CRED_URL -o /dev/null)" == "200" ]
 then
   echo "----------------------------------------------------"
@@ -43,14 +46,14 @@ curl -X POST http://$JENKINS_URL:$JENKINS_URL_PORT/credentials/store/system/doma
   }
 }'
 
-export CRED_NAME=git-credentials-acm
+CRED_NAME=git-credentials-acm
 echo "-----------------------------------------------------------------------------------"
 echo "Creating Credential '$CRED_NAME' within Jenkins ..."
 echo "-----------------------------------------------------------------------------------"
 echo "----------------------------------------------------"
 echo "Checking if $CRED_NAME exists ..."
 echo "----------------------------------------------------"
-export CRED_URL="http://$JENKINS_URL:$JENKINS_URL_PORT/credentials/store/system/domain/_/credential/$CRED_NAME/config.xml"
+CRED_URL="http://$JENKINS_URL:$JENKINS_URL_PORT/credentials/store/system/domain/_/credential/$CRED_NAME/config.xml"
 if [ "$(curl -sL -w '%{http_code}' $CRED_URL -o /dev/null)" == "200" ]
 then
   echo "----------------------------------------------------"
@@ -77,14 +80,14 @@ curl -X POST http://$JENKINS_URL:$JENKINS_URL_PORT/credentials/store/system/doma
   }
 }'
 
-export CRED_NAME=perfsig-api-token
+CRED_NAME=perfsig-api-token
 echo "-----------------------------------------------------------------------------------"
 echo "Creating Credential '$CRED_NAME' within Jenkins ..."
 echo "-----------------------------------------------------------------------------------"
 echo "----------------------------------------------------"
 echo "Checking if $CRED_NAME exists ..."
 echo "----------------------------------------------------"
-export CRED_URL="http://$JENKINS_URL:$JENKINS_URL_PORT/credentials/store/system/domain/_/credential/$CRED_NAME/config.xml"
+CRED_URL="http://$JENKINS_URL:$JENKINS_URL_PORT/credentials/store/system/domain/_/credential/$CRED_NAME/config.xml"
 if [ "$(curl -sL -w '%{http_code}' $CRED_URL -o /dev/null)" == "200" ]
 then
   echo "----------------------------------------------------"

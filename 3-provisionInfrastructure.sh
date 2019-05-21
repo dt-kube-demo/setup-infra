@@ -12,8 +12,7 @@ case $DEPLOYMENT in
     ./provisionEks.sh
     ;;
   aks)
-    echo "Deploy for $DEPLOYMENT not supported"
-    #./provisionAks.sh
+    ./provisionAks.sh
     ;;
   ocp)
     echo "Deploy for $DEPLOYMENT not supported"
@@ -35,7 +34,7 @@ fi
 sleep 20
 
 echo "===================================================="
-echo "Finished provisioning $DEPLOYMENT Cluster"
+echo "Finished provisioning $DEPLOYMENT_NAME Cluster"
 echo "===================================================="
 echo "Script start time : $START_TIME"
 echo "Script end time   : "$(date)

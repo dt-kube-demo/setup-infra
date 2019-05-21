@@ -2,6 +2,27 @@
 # This is shared library
 ################################################################
 
+get_deployment_name()
+{
+  case $1 in
+    aks)
+      DEPLOYMENT_NAME="Azure AKS"
+      ;;
+    eks)
+      DEPLOYMENT_NAME="AWS EKS"
+      ;;
+    ocp)
+      DEPLOYMENT_NAME="OpenShift on Google GKE"
+      ;;
+    gke)
+      DEPLOYMENT_NAME="Google GKE"
+      ;;
+    *)
+      DEPLOYMENT_NAME=$1
+      ;;
+  esac
+}
+
 show_deployment_help()
 {
   echo ""
@@ -10,7 +31,7 @@ show_deployment_help()
   echo "Valid 'deployment types' are:"
   echo ""
   echo "eks = AWS"
-  #echo "aks = Azure"
+  echo "aks = Azure"
   #echo "ocp = Open Shift"
   #echo "gke = Google" 
   echo "=============================================" 
@@ -35,17 +56,18 @@ validate_deployment_argument() {
   # Validate Deployment argument value
   # uncomment as enable these....
   #OK=0 ; DEPLOY_TYPES="ocp eks gke aks"
-  OK=0 ; DEPLOY_TYPES="eks"
+  OK=0 ; DEPLOY_TYPES="eks aks"
   for DT in $DEPLOY_TYPES ; do [ $DEPLOYMENT == $DT ] && { OK=1 ; break; } ; done
   if [ $OK -eq 0 ]; then
     show_deployment_help
   fi
 
+  # ths will store name into DEPLOYMENT_NAME variable
+  get_deployment_name $DEPLOYMENT
+
   # update creds file with new value
   CREDS=./creds.json
   cp "$CREDS" "$CREDS".bak 
-
-  #sed -e 's/"deployment": ".*/"deployment": "'$DEPLOYMENT'",/g' $CREDS > $CREDS
   cat $CREDS.bak | \
       sed -e 's/"deployment": ".*/"deployment": "'$DEPLOYMENT'",/g' > $CREDS
 }

@@ -11,7 +11,7 @@ validate_deployment_argument $DEPLOYMENT
 show_menu(){
 echo ""
 echo "===================================================="
-echo "SETUP MENU for $DEPLOYMENT"
+echo "SETUP MENU for $DEPLOYMENT_NAME"
 echo "===================================================="
 echo "1)  Install Prerequisites Tools"
 echo "2)  Enter Installation Script Inputs"

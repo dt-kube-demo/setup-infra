@@ -14,7 +14,7 @@
     "registry": "robjahn",
     "registryToken": "",
     "azureSubscription": "AZURE_SUBSCRIPTION_PLACEHOLDER",
-    "azureResourceGroup": "AZURE_RESOURCE_GROUP_PLACEHOLDER",
+    "azureResourcePrefix": "AZURE_RESOURCE_PREFIX_PLACEHOLDER",
     "azureLocation": "AZURE_LOCATION_PLACEHOLDER",
     "gkeProject": "GKE_PROJECT_PLACEHOLDER",
     "clusterName": "CLUSTER_NAME_PLACEHOLDER",

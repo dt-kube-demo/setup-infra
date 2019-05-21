@@ -22,6 +22,10 @@ terraform/*.yaml
 pipelines/gen/*.xml
 pipelines/gen/*.bak
 
+# azure provisioning generated files
+aks/azure_service_principal.json
+aks/parameters.json
+
 # any misc logs
 *.log
 notes

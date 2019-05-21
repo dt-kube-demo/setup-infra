@@ -23,7 +23,7 @@ then
     CLUSTER_REGION=$(cat creds.json | jq -r '.clusterRegion')
 
     AZURE_SUBSCRIPTION=$(cat creds.json | jq -r '.azureSubscription')
-    AZURE_RESOURCE_GROUP=$(cat creds.json | jq -r '.azureResourceGroup')
+    AZURE_RESOURCE_PREFIX=$(cat creds.json | jq -r '.azureResourcePrefix')
     AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
 
     GKE_PROJECT=$(cat creds.json | jq -r '.gkeProject')
@@ -50,12 +50,12 @@ case $DEPLOYMENT in
     read -p "Cluster Region (eg.us-east-1)          (current: $CLUSTER_REGION) : " CLUSTER_REGION_NEW
     ;;
   aks)
-    read -p "Azure Subscription                      (current: $AZURE_SUBSCRIPTION) : " AZURE_SUBSCRIPTION_NEW
-    read -p "Azure Location                          (current: $AZURE_LOCATION) : " AZURE_LOCATION_NEW
-    read -p "Azure Resource Group                    (current: $AZURE_RESOURCE_GROUP) : " AZURE_RESOURCE_GROUP_NEW
+    read -p "Azure Subscription                     (current: $AZURE_SUBSCRIPTION) : " AZURE_SUBSCRIPTION_NEW
+    read -p "Azure Location                         (current: $AZURE_LOCATION) : " AZURE_LOCATION_NEW
+    read -p "Azure Resource Group                   (current: $AZURE_RESOURCE_PREFIX) : " AZURE_RESOURCE_PREFIX_NEW
     ;;
   gke)
-    read -p "Google Project                      (current: $GKE_PROJECT) : " GKE_PROJECT_NEW
+    read -p "Google Project                         (current: $GKE_PROJECT) : " GKE_PROJECT_NEW
     read -p "Cluster Name (eg.dt-kube-demo-cluster) (current: $CLUSTER_NAME) : " CLUSTER_NAME_NEW
     read -p "Cluster Zone (eg.us-east1-b)           (current: $CLUSTER_ZONE) : " CLUSTER_ZONE_NEW
     read -p "Cluster Region (eg.us-east1)           (current: $CLUSTER_REGION) : " CLUSTER_REGION_NEW
@@ -79,7 +79,7 @@ CLUSTER_REGION=${CLUSTER_REGION_NEW:-$CLUSTER_REGION}
 # aks specific
 AZURE_SUBSCRIPTION=${AZURE_SUBSCRIPTION_NEW:-$AZURE_SUBSCRIPTION}
 AZURE_LOCATION=${AZURE_LOCATION_NEW:-$AZURE_LOCATION}
-AZURE_RESOURCE_GROUP=${AZURE_RESOURCE_GROUP_NEW:-$AZURE_RESOURCE_GROUP}
+AZURE_RESOURCE_PREFIX=${AZURE_RESOURCE_PREFIX_NEW:-$AZURE_RESOURCE_PREFIX}
 # gke specific
 GKE_PROJECT=${GKE_PROJECT_NEW:-$GKE_PROJECT}
 CLUSTER_ZONE=${CLUSTER_ZONE_NEW:-$CLUSTER_ZONE}
@@ -102,7 +102,7 @@ case $DEPLOYMENT in
     ;;
   aks)
     echo "Azure Subscription           : $AZURE_SUBSCRIPTION"
-    echo "Azure Resource Group         : $AZURE_RESOURCE_GROUP"
+    echo "Azure Resource Group         : $AZURE_RESOURCE_PREFIX"
     echo "Azure Location               : $AZURE_LOCATION"
     ;;
   gke)
@@ -147,7 +147,7 @@ then
         cat $CREDS.temp | \
           sed 's~AZURE_SUBSCRIPTION_PLACEHOLDER~'"$AZURE_SUBSCRIPTION"'~' | \
           sed 's~AZURE_LOCATION_PLACEHOLDER~'"$AZURE_LOCATION"'~' | \
-          sed 's~AZURE_RESOURCE_GROUP_PLACEHOLDER~'"$AZURE_RESOURCE_GROUP"'~' > $CREDS
+          sed 's~AZURE_RESOURCE_PREFIX_PLACEHOLDER~'"$AZURE_RESOURCE_PREFIX"'~' > $CREDS
         rm $CREDS.temp 2> /dev/null
         ;;
       gke)

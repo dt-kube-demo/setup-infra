@@ -21,9 +21,12 @@ fi
 
 export JENKINS_USER=$(cat creds.json | jq -r '.jenkinsUser')
 export JENKINS_PASSWORD=$(cat creds.json | jq -r '.jenkinsPassword')
-export JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r .status.loadBalancer.ingress[].hostname)
 export JENKINS_URL_PORT=$(kubectl get service jenkins -n cicd -o=json | jq -r '.spec.ports[] | select(.name=="http") | .port')
-
+JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r '.status.loadBalancer.ingress[].hostname | select (.!=null)')
+if [ -n "JENKINS_URL" ]
+then
+  JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r '.status.loadBalancer.ingress[].ip')
+fi
 
 # clean up generated file.  dont delete the README!
 rm -f ./pipelines/gen/*.xml
@@ -44,7 +47,7 @@ fi
 
 echo "----------------------------------------------------"
 echo "Creating Pipleine Jobs in Jenkins"
-echo "Source of Jenkinsfiles : http://gitbub.com/$ORG"
+echo "Source of Jenkinsfiles : http://github.com/$ORG"
 echo "Jenkins Server         : http://$JENKINS_URL:$JENKINS_URL_PORT"
 echo "Job list to process    : $JOBLIST"
 echo "----------------------------------------------------"

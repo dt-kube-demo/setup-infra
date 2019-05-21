@@ -1,10 +1,21 @@
 #!/bin/bash
 
-export JENKINS_PORT=$(cat creds.json | jq -r '.jenkinsPort')
-export JENKINS_USER=$(cat creds.json | jq -r '.jenkinsUser')
-export JENKINS_PASSWORD=$(cat creds.json | jq -r '.jenkinsPassword')
-export JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r .status.loadBalancer.ingress[].hostname)
-export JENKINS_URL_PORT=$(kubectl get service jenkins -n cicd -o=json | jq -r '.spec.ports[] | select(.name=="http") | .port')
+DEPLOYMENT=$(cat creds.json | jq -r '.deployment')
+JENKINS_USER=$(cat creds.json | jq -r '.jenkinsUser')
+JENKINS_PASSWORD=$(cat creds.json | jq -r '.jenkinsPassword')
+JENKINS_PORT=$(kubectl get service jenkins -n cicd -o=json | jq -r '.spec.ports[] | select(.name=="http") | .port' )
+JENKINS_URL=$(kubectl get service jenkins -n cicd -o=json | jq -r '.status.loadBalancer.ingress[].hostname | select (.!=null)')
+if [ -n "JENKINS_URL" ]
+then
+  JENKINS_URL="http://$(kubectl get service jenkins -n cicd -o=json | jq -r '.status.loadBalancer.ingress[].ip')"
+fi
+
+if [ $DEPLOYMENT == "aks" ]
+then 
+  AZURE_RESOURCE_PREFIX=$(cat creds.json | jq -r '.azureResourcePrefix')
+  AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
+  JENKINS_URL="http://jenkins-$AZURE_RESOURCE_PREFIX-dt-kube-demo.$AZURE_LOCATION.cloudapp.azure.com"
+fi
 
 echo "--------------------------------------------------------------------------"
 echo "kubectl -n cicd get pods"

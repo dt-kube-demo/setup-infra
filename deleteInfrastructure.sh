@@ -12,7 +12,7 @@ case $DEPLOYMENT in
     CLUSTER_REGION=$(cat creds.json | jq -r '.clusterRegion')
 
     echo "===================================================="
-    echo "About to delete $DEPLOYMENT cluster."
+    echo "About to delete $DEPLOYMENT_NAME cluster:"
     echo "  Cluster Name   : $CLUSTER_NAME"
     echo "  Cluster Region : $CLUSTER_REGION"
     echo ""
@@ -23,28 +23,30 @@ case $DEPLOYMENT in
     eksctl delete cluster --name=$CLUSTER_NAME --region=$CLUSTER_REGION
     ;;
   aks)
-    CLUSTER_NAME=$(cat creds.json | jq -r '.clusterName')
-    AZURE_RESOURCE_GROUP=$(cat creds.json | jq -r '.azureResourceGroup')
+    AZURE_RESOURCE_PREFIX=$(cat creds.json | jq -r '.azureResourcePrefix')
+    AZURE_RESOURCEGROUP="$AZURE_RESOURCE_PREFIX-dt-kube-demo-group"
+    AZURE_CLUSTER="$AZURE_RESOURCE_PREFIX-dt-kube-demo-cluster"
+    AZURE_SERVICE_PRINCIPAL="$AZURE_RESOURCE_PREFIX-dt-kube-demo-sp"
 
     echo "===================================================="
-    echo "About to delete:"
-    echo "  $DEPLOYMENT cluster        : $CLUSTER_NAME"
-    echo "  $DEPLOYMENT resource group : $AZURE_RESOURCE_GROUP"
+    echo "About to delete $DEPLOYMENT_NAME cluster:"
+    echo "  AZURE_CLUSTER           : $AZURE_CLUSTER"
+    echo "  AZURE_RESOURCEGROUP     : $AZURE_RESOURCEGROUP"
+    echo "  AZURE_SERVICE_PRINCIPAL : $AZURE_SERVICE_PRINCIPAL"
     echo ""
     echo "This will take several minutes"
     echo "===================================================="
     echo ""
     START_TIME=$(date)
-    AZURE_SERVICE_PRINCIPAL="$CLUSTER_NAME-sp"
 
-    echo "Deleting cluster $CLUSTER_NAME ..."
-    az aks delete --name $CLUSTER_NAME --resource-group $AZURE_RESOURCE_GROUP
-    echo "Deleting resource group $AZURE_RESOURCE_GROUP ..."
-    az group delete --name $AZURE_RESOURCE_GROUP -y
+    echo "Deleting cluster $AZURE_CLUSTER ..."
+    az aks delete --name $AZURE_CLUSTER --resource-group $AZURE_RESOURCEGROUP
+    echo "Deleting resource group $AZURE_RESOURCEGROUP ..."
+    az group delete --name $AZURE_RESOURCEGROUP -y
     # need to look up service principal id and then delete it
     # this is outside of the resource group
     AZURE_SERVICE_PRINCIPAL_APPID=$(az ad sp list --display-name $AZURE_SERVICE_PRINCIPAL | jq -r '.[0].appId')
-    echo "Deleting service principal $AZURE_SERVICE_PRINCIPAL_APPID ..."
+    echo "Deleting service principal $AZURE_SERVICE_PRINCIPAL ..."
     az ad sp delete --id $AZURE_SERVICE_PRINCIPAL_APPID
     ;;
   ocp)
@@ -59,7 +61,7 @@ case $DEPLOYMENT in
     GKE_PROJECT=$(cat creds.json | jq -r '.gkeProject')
 
     echo "===================================================="
-    echo "About to delete $DEPLOYMENT cluster."
+    echo "About to delete $DEPLOYMENT_NAME cluster:"
     echo "  Project        : $GKE_PROJECT"
     echo "  Cluster Name   : $CLUSTER_NAME"
     echo "  Cluster Zone   : $CLUSTER_ZONE"
@@ -74,7 +76,7 @@ case $DEPLOYMENT in
 esac
 
 echo "===================================================="
-echo "Finished deleting $DEPLOYMENT Cluster"
+echo "Finished deleting $DEPLOYMENT_NAME Cluster"
 echo "===================================================="
 echo "Script start time : "$START_TIME
 echo "Script end time   : "$(date)

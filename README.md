@@ -21,6 +21,7 @@ Footnotes:
 1. GitHub - Assumes you have a github account and have created a new github organization
 1. Cloud provider account.  Highly recommend to sign up for personal free trial as to have full admin rights and to not cause any issues with your enterprise account. Links to free trials
    * AWS - https://aws.amazon.com/free/
+   * Azure - https://azure.microsoft.com/en-us/free/
 
 ## 2. Tools
 
@@ -38,10 +39,14 @@ AWS additional tools
 * ekscli - [CLI for Amazon EKS](https://eksctl.io/)
 * aws-iam-authenticator - [Provides authentication kubectl to the eks cluster](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 
+Azure additional tools
+* az - [CLI for Azure](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)
+
 # Bastion host setup
 
 See these instructions for provisioning an ubuntu 16.04 LTS host on the targeted cloud provider.
 * [AWS EC2 instance](AWS.md) 
+* [Azure VM instance](AZURE.md) 
 
 # Provision Cluster and onboard the Orders application
 
@@ -51,6 +56,7 @@ There are multiple scripts used for the setup and they must be run the right ord
 ```
 NOTE: Valid 'deployment type' argument values are:
 * eks = AWS
+* aks = Azure
 
 The setup menu should look like this:
 ```
