@@ -27,26 +27,26 @@ echo ""
 echo "------------------------------------------------------"
 echo "Creating Resource group: $AZURE_RESOURCEGROUP"
 echo "------------------------------------------------------"
-sudo az account set -s $AZURE_SUBSCRIPTION
-sudo az group create --name "$AZURE_RESOURCEGROUP" --location $AZURE_LOCATION
-sudo az group list -o table
+az account set -s $AZURE_SUBSCRIPTION
+az group create --name "$AZURE_RESOURCEGROUP" --location $AZURE_LOCATION
+az group list -o table
 
 # need to look up service principal id and then delete it
 # this is outside of the resource group
-AZURE_SERVICE_PRINCIPAL_APPID=$(sudo az ad sp list --display-name $AZURE_SERVICE_PRINCIPAL | jq -r '.[0].appId | select (.!=null)')
+AZURE_SERVICE_PRINCIPAL_APPID=$(az ad sp list --display-name $AZURE_SERVICE_PRINCIPAL | jq -r '.[0].appId | select (.!=null)')
 if [ -n "$AZURE_SERVICE_PRINCIPAL_APPID" ]
 then
     echo "------------------------------------------------------"
     echo "Deleting Service Principal     : $AZURE_SERVICE_PRINCIPAL"
     echo "AZURE_SERVICE_PRINCIPAL_APPID  : $AZURE_SERVICE_PRINCIPAL_APPID"
     echo "------------------------------------------------------"
-    sudo az ad sp delete --id $AZURE_SERVICE_PRINCIPAL_APPID
+    az ad sp delete --id $AZURE_SERVICE_PRINCIPAL_APPID
 fi
 
 echo "------------------------------------------------------"
 echo "Creating Service Principal: $AZURE_SERVICE_PRINCIPAL"
 echo "------------------------------------------------------"
-sudo az ad sp create-for-rbac -n "http://$AZURE_SERVICE_PRINCIPAL" \
+az ad sp create-for-rbac -n "http://$AZURE_SERVICE_PRINCIPAL" \
     --role contributor \
     --scopes /subscriptions/"$AZURE_SUBSCRIPTION"/resourceGroups/"$AZURE_RESOURCEGROUP" > ./aks/azure_service_principal.json
 AZURE_APPID=$(jq -r .appId ./aks/azure_service_principal.json)
@@ -131,7 +131,7 @@ echo ""
 sudo ./configureAzureDns.sh
 
 echo "Updated Kubectl with credentials"
-sudo az aks get-credentials --resource-group $AZURE_RESOURCEGROUP --name $AZURE_CLUSTER --overwrite-existing
+az aks get-credentials --resource-group $AZURE_RESOURCEGROUP --name $AZURE_CLUSTER --overwrite-existing
 
 echo "------------------------------------------------------"
 echo "Azure cluster deployment complete."

@@ -66,10 +66,10 @@ Finally, proceed to the [Provision Cluster, Install Keptn, and onboard the Order
 Within the VM, run these commands to configure the Azure CLI 
 ```
 # login to your account.  This will ask you to open a browser with a code and then login.
-sudo az login
+az login
 
 # verify you are on the right subscription.  Look for "isDefault": true
-sudo az account list --output table
+az account list --output table
 ```
 
 # Delete bastion host
