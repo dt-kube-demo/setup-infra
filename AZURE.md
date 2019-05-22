@@ -71,7 +71,11 @@ Finally, proceed to the [Provision Cluster and onboard the Orders application](R
 From your laptop, run these commands to delete the resource group. 
 This will delete the bastion host resource group and the VM running within it.
 ```
-export VM_GROUP_NAME=dt-kube-demo-bastion-group
+# adjust these variables
+export RESOURCE_PREFIX=<example your last name>
+# leave these values
+export VM_GROUP_NAME="$RESOURCE_PREFIX"-dt-kube-demo-bastion-group
+
 az group delete --name $VM_GROUP_NAME --yes
 ```
 
