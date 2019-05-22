@@ -6,9 +6,9 @@ AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
 RESOURCE_PREFIX=$(cat creds.json | jq -r '.resourcePrefix')
 # derived values
 CLUSTER_NAME="$RESOURCE_PREFIX"-dt-kube-demo-cluster
-AZURE_RESOURCEGROUP="$AZURE_RESOURCE_PREFIX"-dt-kube-demo-group
-AZURE_DEPLOYMENTNAME="$AZURE_RESOURCE_PREFIX"-dt-kube-demo-deployment
-AZURE_SERVICE_PRINCIPAL="$AZURE_RESOURCE_PREFIX"-dt-kube-demo-sp
+AZURE_RESOURCEGROUP="$RESOURCE_PREFIX"-dt-kube-demo-group
+AZURE_DEPLOYMENTNAME="$RESOURCE_PREFIX"-dt-kube-demo-deployment
+AZURE_SERVICE_PRINCIPAL="$RESOURCE_PREFIX"-dt-kube-demo-sp
 
 echo "===================================================="
 echo "About to provision Azure Resources with these inputs: "
@@ -61,7 +61,7 @@ echo "Generated Serice Principal App ID: $AZURE_APPID"
  
 # prepare cluster parameters file values
 jq -n \
-    --arg owner "$AZURE_RESOURCE_PREFIX" \
+    --arg owner "$RESOURCE_PREFIX" \
     --arg name "$CLUSTER_NAME" \
     --arg location "$AZURE_LOCATION" \
     --arg dns "$AZURE_LOCATION-dns" \

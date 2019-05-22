@@ -12,9 +12,9 @@ fi
 
 if [ $DEPLOYMENT == "aks" ]
 then 
-  AZURE_RESOURCE_PREFIX=$(cat creds.json | jq -r '.azureResourcePrefix')
+  RESOURCE_PREFIX=$(cat creds.json | jq -r '.resourcePrefix')
   AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
-  JENKINS_URL="http://jenkins-$AZURE_RESOURCE_PREFIX-dt-kube-demo.$AZURE_LOCATION.cloudapp.azure.com"
+  JENKINS_URL="http://jenkins-$RESOURCE_PREFIX-dt-kube-demo.$AZURE_LOCATION.cloudapp.azure.com"
 fi
 
 echo "--------------------------------------------------------------------------"

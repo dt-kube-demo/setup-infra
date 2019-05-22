@@ -25,8 +25,8 @@ case $DEPLOYMENT in
     eksctl delete cluster --name=$CLUSTER_NAME --region=$CLUSTER_REGION
     ;;
   aks)
-    AZURE_RESOURCEGROUP="$AZURE_RESOURCE_PREFIX-dt-kube-demo-group"
-    AZURE_SERVICE_PRINCIPAL="$AZURE_RESOURCE_PREFIX-dt-kube-demo-sp"
+    AZURE_RESOURCEGROUP="$RESOURCE_PREFIX-dt-kube-demo-group"
+    AZURE_SERVICE_PRINCIPAL="$RESOURCE_PREFIX-dt-kube-demo-sp"
 
     echo "===================================================="
     echo "About to delete $DEPLOYMENT_NAME cluster:"
