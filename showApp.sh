@@ -8,9 +8,8 @@ RESOURCE_PREFIX=$(cat creds.json | jq -r '.resourcePrefix')
 if [ $DEPLOYMENT == "aks" ]
 then 
   AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
+  STAGING_URL="http://staging-$RESOURCE_PREFIX-dt-kube-demo.$AZURE_LOCATION.cloudapp.azure.com"
   PRODUCTION_URL="http://production-$RESOURCE_PREFIX-dt-kube-demo.$AZURE_LOCATION.cloudapp.azure.com"
-    PRODUCTION_URL="http://production-$RESOURCE_PREFIX-dt-kube-demo.$AZURE_LOCATION.cloudapp.azure.com"
-
 fi
 
 echo "--------------------------------------------------------------------------"

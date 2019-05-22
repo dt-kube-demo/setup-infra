@@ -41,13 +41,19 @@ show_deployment_help()
 
 validate_deployment_argument() {
   # Validate passed in an argument.  
-  # If don't pass is in then look for value in creds.json
-  if [ -z $1 ]
-  then
-    DEPLOYMENT=$(cat creds.json | jq -r '.deployment')
-    if [ -z "$DEPLOYMENT" ]
-    then
+  # If don't pass is in then attempt to look for value in creds.json
+  if [ -z $1 ]; then
+    # if jq not installed, then can not parse file so show the help
+    # if it is, then look for value in creds.json
+    command -v jq &> /dev/null
+    if [ $? -ne 0 ]; then
       show_deployment_help
+    else
+      DEPLOYMENT=$(cat creds.json | jq -r '.deployment')
+      if [ -z "$DEPLOYMENT" ]
+      then
+        show_deployment_help
+      fi
     fi
   else
     DEPLOYMENT=$1
@@ -66,8 +72,11 @@ validate_deployment_argument() {
   get_deployment_name $DEPLOYMENT
 
   # update creds file with new value
-  CREDS=./creds.json
-  cp "$CREDS" "$CREDS".bak 2> /dev/null
-  cat $CREDS.bak | \
-      sed -e 's/"deployment": ".*/"deployment": "'$DEPLOYMENT'",/g' > $CREDS
+  if [ -f ./creds.json ]; then
+    cp ./creds.json ./creds.json.bak 2> /dev/null
+  else
+    cp ./creds.sav ./creds.json.bak 2> /dev/null
+  fi
+  cat creds.json.bak | \
+      sed -e 's/"deployment": ".*/"deployment": "'$DEPLOYMENT'",/g' > creds.json
 }

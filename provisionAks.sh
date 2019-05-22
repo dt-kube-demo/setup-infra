@@ -6,9 +6,9 @@ AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
 RESOURCE_PREFIX=$(cat creds.json | jq -r '.resourcePrefix')
 # derived values
 CLUSTER_NAME="$RESOURCE_PREFIX"-dt-kube-demo-cluster
-AZURE_RESOURCEGROUP="$AZURE_RESOURCE_PREFIX-dt-kube-demo-group"
-AZURE_DEPLOYMENTNAME="$AZURE_RESOURCE_PREFIX-dt-kube-demo-deployment"
-AZURE_SERVICE_PRINCIPAL="$AZURE_RESOURCE_PREFIX-dt-kube-demo-sp"
+AZURE_RESOURCEGROUP="$AZURE_RESOURCE_PREFIX"-dt-kube-demo-group
+AZURE_DEPLOYMENTNAME="$AZURE_RESOURCE_PREFIX"-dt-kube-demo-deployment
+AZURE_SERVICE_PRINCIPAL="$AZURE_RESOURCE_PREFIX"-dt-kube-demo-sp
 
 echo "===================================================="
 echo "About to provision Azure Resources with these inputs: "
