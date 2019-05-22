@@ -49,4 +49,4 @@ echo ""
 sleep 150
 
 # configure DNS.
-./configureDemoAppDns.sh
+./configureJenkinsDns.sh

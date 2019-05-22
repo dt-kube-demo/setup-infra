@@ -38,36 +38,36 @@ while [ opt != "" ]
         case $opt in
         1)
                 ./1-installPrerequisiteTools.sh $DEPLOYMENT  2>&1 | tee logs/1-installPrerequisiteTools.log
-                break
+                show_menu
                 ;;
         2)
                 ./2-enterInstallationScriptInputs.sh $DEPLOYMENT 2>&1 | tee logs/2-enterInstallationScriptInputs.log
-                break
+                show_menu
                 ;;
         3)
                 ./3-provisionInfrastructure.sh $DEPLOYMENT  2>&1 | tee logs/3-provisionInfrastructure.log
-                break
+                show_menu
                 ;;
         4)
                 ./4-setupDemo.sh $DEPLOYMENT 2>&1 | tee logs/4-setupDemo.log
-                break
+                show_menu
                 ;;
         5)
                 GITHUB_ORGANIZATION=$(cat creds.json | jq -r '.githubOrg')
                 ./5-forkApplicationRepositories.sh $GITHUB_ORGANIZATION 2>&1 | tee logs/5-forkApplicationRepositories.log
-                break
+                show_menu
                 ;;
         10)
                 ./validateKubectl.sh  2>&1 | tee logs/validateKubectl.log
-                break
+                show_menu
                 ;;
         11)
                 ./validatePrerequisiteTools.sh $DEPLOYMENT 2>&1 | tee logs/validatePrerequisiteTools.log
-                break
+                show_menu
                 ;;
         99)
                 ./deleteInfrastructure.sh $DEPLOYMENT 2>&1 | tee logs/deleteInfrastructure.log
-                break
+                show_menu
                 ;;
         q)
            	break

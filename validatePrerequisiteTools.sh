@@ -107,7 +107,7 @@ case $DEPLOYMENT in
     echo "=============================================================================="
     echo "Validating OCP pre-requisites"
     echo "=============================================================================="
-    echo -n "oc               "
+    echo -n "oc                "
     command -v oc &> /dev/null
     if [ $? -ne 0 ]; then
       echo "Error"
@@ -115,14 +115,14 @@ case $DEPLOYMENT in
       echo ""
       exit 1
     fi
-    echo "ok	$(command -v oc)"
+    echo "ok    $(command -v oc)"
     ;;
   aks)
     # Azure 
     echo "=============================================================================="
     echo "Validating Azure pre-requisites"
     echo "=============================================================================="
-    echo -n "az               "
+    echo -n "az                "
     command -v az &> /dev/null
     if [ $? -ne 0 ]; then
       echo "Error"
@@ -130,7 +130,7 @@ case $DEPLOYMENT in
       echo ""
       exit 1
     fi
-    echo "ok      $(command -v az)"
+    echo "ok    $(command -v az)"
     ;;
   gke)
     # Google Cloud 
