@@ -26,10 +26,13 @@ az account list --output table
 
 On your laptop, run these commands to provision the VM and a resource group
 ```
-# optionally adjust these variables
-export VM_GROUP_NAME=dt-kube-demo-bastion-group
-export VM_NAME=dt-kube-demo-bastion
+# adjust these variables
 export VM_GROUP_LOCATION=eastus
+export RESOURCE_PREFIX=<example your last name>
+
+# leave these values
+export VM_GROUP_NAME="$RESOURCE_PREFIX"-dt-kube-demo-bastion-group
+export VM_NAME="$RESOURCE_PREFIX"-dt-kube-demo-bastion
 
 # provision the host
 az group create --name $VM_GROUP_NAME --location $VM_GROUP_LOCATION

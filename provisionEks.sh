@@ -1,7 +1,10 @@
 #!/bin/bash
 
-CLUSTER_NAME=$(cat creds.json | jq -r '.clusterName')
+# values read in from creds file
 CLUSTER_REGION=$(cat creds.json | jq -r '.clusterRegion')
+RESOURCE_PREFIX=$(cat creds.json | jq -r '.resourcePrefix')
+# derived values
+CLUSTER_NAME="$RESOURCE_PREFIX"-dt-kube-demo-cluster
 
 echo "===================================================="
 echo "About to provision AWS Resources. "

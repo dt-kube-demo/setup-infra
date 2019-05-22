@@ -22,12 +22,12 @@ then
     GITHUB_USER_NAME=$(cat creds.json | jq -r '.githubUserName')
     GITHUB_USER_EMAIL=$(cat creds.json | jq -r '.githubUserEmail')
     GITHUB_ORGANIZATION=$(cat creds.json | jq -r '.githubOrg')
-    CLUSTER_NAME=$(cat creds.json | jq -r '.clusterName')
+    RESOURCE_PREFIX=$(cat creds.json | jq -r '.resourcePrefix')
+
     CLUSTER_ZONE=$(cat creds.json | jq -r '.clusterZone')
     CLUSTER_REGION=$(cat creds.json | jq -r '.clusterRegion')
 
     AZURE_SUBSCRIPTION=$(cat creds.json | jq -r '.azureSubscription')
-    AZURE_RESOURCE_PREFIX=$(cat creds.json | jq -r '.azureResourcePrefix')
     AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
 
     GKE_PROJECT=$(cat creds.json | jq -r '.gkeProject')
@@ -47,20 +47,18 @@ read -p "GitHub User Name                       (current: $GITHUB_USER_NAME) : "
 read -p "GitHub Personal Access Token           (current: $GITHUB_PERSONAL_ACCESS_TOKEN) : " GITHUB_PERSONAL_ACCESS_TOKEN_NEW
 read -p "GitHub User Email                      (current: $GITHUB_USER_EMAIL) : " GITHUB_USER_EMAIL_NEW
 read -p "GitHub Organization                    (current: $GITHUB_ORGANIZATION) : " GITHUB_ORGANIZATION_NEW
+read -p "PaaS Resource Prefix (e.g. lastname)   (current: $RESOURCE_PREFIX) : " RESOURCE_PREFIX_NEW
 
 case $DEPLOYMENT in
   eks)
-    read -p "Cluster Name                           (current: $CLUSTER_NAME) : " CLUSTER_NAME_NEW
     read -p "Cluster Region (eg.us-east-1)          (current: $CLUSTER_REGION) : " CLUSTER_REGION_NEW
     ;;
   aks)
     read -p "Azure Subscription ID                  (current: $AZURE_SUBSCRIPTION) : " AZURE_SUBSCRIPTION_NEW
     read -p "Azure Location (e.g. eastus)           (current: $AZURE_LOCATION) : " AZURE_LOCATION_NEW
-    read -p "Azure Resource Prefix (e.g. lastname)  (current: $AZURE_RESOURCE_PREFIX) : " AZURE_RESOURCE_PREFIX_NEW
     ;;
   gke)
     read -p "Google Project                         (current: $GKE_PROJECT) : " GKE_PROJECT_NEW
-    read -p "Cluster Name (eg.dt-kube-demo-cluster) (current: $CLUSTER_NAME) : " CLUSTER_NAME_NEW
     read -p "Cluster Zone (eg.us-east1-b)           (current: $CLUSTER_ZONE) : " CLUSTER_ZONE_NEW
     read -p "Cluster Region (eg.us-east1)           (current: $CLUSTER_REGION) : " CLUSTER_REGION_NEW
     ;;
@@ -78,12 +76,11 @@ GITHUB_USER_NAME=${GITHUB_USER_NAME_NEW:-$GITHUB_USER_NAME}
 GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN_NEW:-$GITHUB_PERSONAL_ACCESS_TOKEN}
 GITHUB_USER_EMAIL=${GITHUB_USER_EMAIL_NEW:-$GITHUB_USER_EMAIL}
 GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION_NEW:-$GITHUB_ORGANIZATION}
-CLUSTER_NAME=${CLUSTER_NAME_NEW:-$CLUSTER_NAME}
 CLUSTER_REGION=${CLUSTER_REGION_NEW:-$CLUSTER_REGION}
 # aks specific
 AZURE_SUBSCRIPTION=${AZURE_SUBSCRIPTION_NEW:-$AZURE_SUBSCRIPTION}
 AZURE_LOCATION=${AZURE_LOCATION_NEW:-$AZURE_LOCATION}
-AZURE_RESOURCE_PREFIX=${AZURE_RESOURCE_PREFIX_NEW:-$AZURE_RESOURCE_PREFIX}
+RESOURCE_PREFIX=${RESOURCE_PREFIX_NEW:-$RESOURCE_PREFIX}
 # gke specific
 GKE_PROJECT=${GKE_PROJECT_NEW:-$GKE_PROJECT}
 CLUSTER_ZONE=${CLUSTER_ZONE_NEW:-$CLUSTER_ZONE}
@@ -98,20 +95,19 @@ echo "GitHub User Name             : $GITHUB_USER_NAME"
 echo "GitHub Personal Access Token : $GITHUB_PERSONAL_ACCESS_TOKEN"
 echo "GitHub User Email            : $GITHUB_USER_EMAIL"
 echo "GitHub Organization          : $GITHUB_ORGANIZATION" 
+echo "PaaS Resource Prefix         : $RESOURCE_PREFIX"
 
 case $DEPLOYMENT in
   eks)
-    echo "Cluster Name                 : $CLUSTER_NAME"
     echo "Cluster Region               : $CLUSTER_REGION"
     ;;
   aks)
     echo "Azure Subscription           : $AZURE_SUBSCRIPTION"
     echo "Azure Location               : $AZURE_LOCATION"
-    echo "Azure Resource Prefix        : $AZURE_RESOURCE_PREFIX"
+    echo "Azure Resource Prefix        : $RESOURCE_PREFIX"
     ;;
   gke)
     echo "Google Project               : $GKE_PROJECT"
-    echo "Cluster Name                 : $CLUSTER_NAME"
     echo "Cluster Region               : $CLUSTER_REGION"
     echo "Cluster Zone                 : $CLUSTER_ZONE"
     ;;
@@ -138,13 +134,13 @@ then
       sed 's~GITHUB_USER_NAME_PLACEHOLDER~'"$GITHUB_USER_NAME"'~' | \
       sed 's~PERSONAL_ACCESS_TOKEN_PLACEHOLDER~'"$GITHUB_PERSONAL_ACCESS_TOKEN"'~' | \
       sed 's~GITHUB_USER_EMAIL_PLACEHOLDER~'"$GITHUB_USER_EMAIL"'~' | \
-      sed 's~GITHUB_ORG_PLACEHOLDER~'"$GITHUB_ORGANIZATION"'~' > $CREDS
+      sed 's~GITHUB_ORG_PLACEHOLDER~'"$GITHUB_ORGANIZATION"'~' | \
+      sed 's~RESOURCE_PREFIX_PLACEHOLDER~'"$RESOURCE_PREFIX"'~' > $CREDS
 
     case $DEPLOYMENT in
       eks)
         cp $CREDS $CREDS.temp
         cat $CREDS.temp | \
-          sed 's~CLUSTER_NAME_PLACEHOLDER~'"$CLUSTER_NAME"'~' | \
           sed 's~CLUSTER_REGION_PLACEHOLDER~'"$CLUSTER_REGION"'~' > $CREDS
         rm $CREDS.temp 2> /dev/null
         ;;
@@ -153,14 +149,12 @@ then
         cat $CREDS.temp | \
           sed 's~AZURE_SUBSCRIPTION_PLACEHOLDER~'"$AZURE_SUBSCRIPTION"'~' | \
           sed 's~AZURE_LOCATION_PLACEHOLDER~'"$AZURE_LOCATION"'~' | \
-          sed 's~AZURE_RESOURCE_PREFIX_PLACEHOLDER~'"$AZURE_RESOURCE_PREFIX"'~' > $CREDS
         rm $CREDS.temp 2> /dev/null
         ;;
       gke)
         cp $CREDS $CREDS.temp
         cat $CREDS.temp | \
           sed 's~GKE_PROJECT_PLACEHOLDER~'"$GKE_PROJECT"'~' | \
-          sed 's~CLUSTER_NAME_PLACEHOLDER~'"$CLUSTER_NAME"'~' | \
           sed 's~CLUSTER_REGION_PLACEHOLDER~'"$CLUSTER_REGION"'~' | \
           sed 's~CLUSTER_ZONE_PLACEHOLDER~'"$CLUSTER_ZONE"'~' > $CREDS
         rm $CREDS.temp 2> /dev/null

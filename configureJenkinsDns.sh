@@ -1,16 +1,19 @@
 #!/bin/bash
 
+# values read in from creds file
 DEPLOYMENT=$(cat creds.json | jq -r '.deployment')
+RESOURCE_PREFIX=$(cat creds.json | jq -r '.resourcePrefix')
+# derived values
+CLUSTER_NAME="$RESOURCE_PREFIX"-dt-kube-demo-cluster
 
 case $DEPLOYMENT in
   aks)
     AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
-		AZURE_RESOURCE_GROUP=$(cat creds.json | jq -r '.azureResourcePrefix')-dt-kube-demo-group
-		AZURE_RESOURCE_CLUSTER=$(cat creds.json | jq -r '.azureResourcePrefix')-dt-kube-demo-cluster
-		DNS_NAME="$(cat creds.json | jq -r '.azureResourcePrefix')"-dt-kube-demo
+		AZURE_RESOURCE_GROUP=$(cat creds.json | jq -r '.resourcePrefix')-dt-kube-demo-group
+		DNS_NAME="$(cat creds.json | jq -r '.resourcePrefix')"-dt-kube-demo
 
 		# format: MC_jahn-dt-kube-demo-group_jahn-dt-kube-demo-cluster_eastus
-		CLUSTER_RESOURCE_GROUP=MC_"$AZURE_RESOURCE_GROUP"_"$AZURE_RESOURCE_CLUSTER"_"$AZURE_LOCATION" 
+		CLUSTER_RESOURCE_GROUP=MC_"$AZURE_RESOURCE_GROUP"_"$CLUSTER_NAME"_"$AZURE_LOCATION" 
 
     echo "----------------------------------------------------"
     echo "Setting up Jenkins DNS"

@@ -3,10 +3,10 @@
 # values read in from creds file
 AZURE_SUBSCRIPTION=$(cat creds.json | jq -r '.azureSubscription')
 AZURE_LOCATION=$(cat creds.json | jq -r '.azureLocation')
-AZURE_RESOURCE_PREFIX=$(cat creds.json | jq -r '.azureResourcePrefix')
+RESOURCE_PREFIX=$(cat creds.json | jq -r '.resourcePrefix')
 # derived values
+CLUSTER_NAME="$RESOURCE_PREFIX"-dt-kube-demo-cluster
 AZURE_RESOURCEGROUP="$AZURE_RESOURCE_PREFIX-dt-kube-demo-group"
-AZURE_CLUSTER="$AZURE_RESOURCE_PREFIX-dt-kube-demo-cluster"
 AZURE_DEPLOYMENTNAME="$AZURE_RESOURCE_PREFIX-dt-kube-demo-deployment"
 AZURE_SERVICE_PRINCIPAL="$AZURE_RESOURCE_PREFIX-dt-kube-demo-sp"
 
@@ -17,7 +17,7 @@ echo ""
 echo "AZURE_SUBSCRIPTION      : $AZURE_SUBSCRIPTION"
 echo "AZURE_LOCATION          : $AZURE_LOCATION"
 echo "AZURE_RESOURCEGROUP     : $AZURE_RESOURCEGROUP"
-echo "AZURE_CLUSTER           : $AZURE_CLUSTER"
+echo "CLUSTER_NAME            : $CLUSTER_NAME"
 echo "AZURE_DEPLOYMENTNAME    : $AZURE_DEPLOYMENTNAME"
 echo "AZURE_SERVICE_PRINCIPAL : $AZURE_SERVICE_PRINCIPAL"
 echo "===================================================="
@@ -62,7 +62,7 @@ echo "Generated Serice Principal App ID: $AZURE_APPID"
 # prepare cluster parameters file values
 jq -n \
     --arg owner "$AZURE_RESOURCE_PREFIX" \
-    --arg name "$AZURE_CLUSTER" \
+    --arg name "$CLUSTER_NAME" \
     --arg location "$AZURE_LOCATION" \
     --arg dns "$AZURE_LOCATION-dns" \
     --arg agentvmsize "Standard_D4s_v3" \
@@ -129,8 +129,8 @@ echo "Letting cluster persist properly (10 sec) ..."
 sleep 10
 
 echo "Updated Kubectl with credentials"
-echo "az aks get-credentials --resource-group $AZURE_RESOURCEGROUP --name $AZURE_CLUSTER --overwrite-existing"
-az aks get-credentials --resource-group $AZURE_RESOURCEGROUP --name $AZURE_CLUSTER --overwrite-existing
+echo "az aks get-credentials --resource-group $AZURE_RESOURCEGROUP --name $CLUSTER_NAME --overwrite-existing"
+az aks get-credentials --resource-group $AZURE_RESOURCEGROUP --name $CLUSTER_NAME --overwrite-existing
 
 echo "===================================================="
 echo "Azure cluster deployment complete."
