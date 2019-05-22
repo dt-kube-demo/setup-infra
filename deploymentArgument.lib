@@ -67,7 +67,7 @@ validate_deployment_argument() {
 
   # update creds file with new value
   CREDS=./creds.json
-  cp "$CREDS" "$CREDS".bak 
+  cp "$CREDS" "$CREDS".bak 2> /dev/null
   cat $CREDS.bak | \
       sed -e 's/"deployment": ".*/"deployment": "'$DEPLOYMENT'",/g' > $CREDS
 }

@@ -158,6 +158,8 @@ case $DEPLOYMENT in
       echo "Downloading 'kubectl' ..."
       sudo az aks install-cli --client-version $AKS_KUBECTL_VERSION
     fi
+    # deal with permission of azure cli folder
+    sudo chown -R $(whoami):$(whoami) ~/.azure
     ;;
   gke)
     # Google specific tools
