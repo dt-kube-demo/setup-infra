@@ -1,40 +1,16 @@
 #!/bin/bash
 
-# Validate Deployment argument
-if [ -z $1 ]
-then
-  echo ""
-  echo "============================================="
-  echo "Missing 'deployment type' argument."
-  echo "Usage:"
-  echo "./0-InstallTools.sh <deployment type>"
-  echo "valid deployment types are: ocp eks gcp aks"
-  echo "=============================================" 
-  echo ""
-  exit 1
-fi
-
-export DEPLOYMENT=$1
-OK=0 ; DEPLOY_TYPES="ocp eks gcp aks"
-for DT in $DEPLOY_TYPES ; do [ $DEPLOYMENT == $DT ] && { OK=1 ; break; } ; done
-if [ $OK -eq 0 ]; then
-  echo ""
-  echo "====================================="
-  echo "Missing 'deployment type' argument."
-  echo "Usage:"
-  echo "./setupDynatrace.sh <deployment type>"
-  echo "valid deployment types are: ocp eks gcp aks"
-  echo "====================================="   
-  echo ""
-  exit 1
-fi
+# load in the shared library and validate argument
+. ./deploymentArgument.lib
+DEPLOYMENT=$1
+validate_deployment_argument $DEPLOYMENT
 
 export DT_TENANT_HOSTNAME=$(cat creds.json | jq -r '.dynatraceHostName')
 export DT_API_TOKEN=$(cat creds.json | jq -r '.dynatraceApiToken')
 export DT_PAAS_TOKEN=$(cat creds.json | jq -r '.dynatracePaaSToken')
 
 # using fixed versus 'latest' version 
-export DT_LATEST_RELEASE='v0.3.0'
+export DT_LATEST_RELEASE='v0.3.1'
 
 echo "----------------------------------------------------"
 echo "Installing Dynatrace OneAgent Operator version : $DT_LATEST_RELEASE"
