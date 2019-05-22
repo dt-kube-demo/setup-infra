@@ -29,7 +29,7 @@ echo "Creating Resource group: $AZURE_RESOURCEGROUP"
 echo "------------------------------------------------------"
 az account set -s $AZURE_SUBSCRIPTION
 az group create --name "$AZURE_RESOURCEGROUP" --location $AZURE_LOCATION
-az group list show --name "$AZURE_RESOURCEGROUP"
+az group show --name "$AZURE_RESOURCEGROUP"
 
 echo "Letting resource group persist properly (10 sec) ..."
 sleep 10 

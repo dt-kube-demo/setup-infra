@@ -61,17 +61,6 @@ cd setup-infra
 ```
 Finally, proceed to the [Provision Cluster, Install Keptn, and onboard the Orders application](README.md#bastion-host-setup) step.
 
-## 5. configure Azure CLI 
-
-Within the VM, run these commands to configure the Azure CLI 
-```
-# login to your account.  This will ask you to open a browser with a code and then login.
-az login
-
-# verify you are on the right subscription.  Look for "isDefault": true
-az account list --output table
-```
-
 # Delete bastion host
 
 ## Option 1 - delete using azure cli

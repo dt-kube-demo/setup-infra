@@ -156,7 +156,7 @@ case $DEPLOYMENT in
     if ! [ -x "$(command -v kubectl)" ]; then
       echo "----------------------------------------------------"
       echo "Downloading 'kubectl' ..."
-      az aks install-cli --client-version $AKS_KUBECTL_VERSION
+      sudo az aks install-cli --client-version $AKS_KUBECTL_VERSION
     fi
     ;;
   gke)
