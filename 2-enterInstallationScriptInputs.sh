@@ -35,7 +35,7 @@ fi
 
 clear
 echo "==================================================================="
-echo "Please enter the values for provider type: $DEPLOYMENT:"
+echo "Please enter the values for provider: $DEPLOYMENT_NAME"
 echo "Press <enter> to keep the current value"
 echo "==================================================================="
 read -p "Dynatrace Tenant ID (e.g. abc12345)    (current: $DT_TENANT_ID) : " DT_TENANT_ID_NEW
@@ -104,7 +104,6 @@ case $DEPLOYMENT in
   aks)
     echo "Azure Subscription           : $AZURE_SUBSCRIPTION"
     echo "Azure Location               : $AZURE_LOCATION"
-    echo "Azure Resource Prefix        : $RESOURCE_PREFIX"
     ;;
   gke)
     echo "Google Project               : $GKE_PROJECT"
@@ -148,7 +147,7 @@ then
         cp $CREDS $CREDS.temp
         cat $CREDS.temp | \
           sed 's~AZURE_SUBSCRIPTION_PLACEHOLDER~'"$AZURE_SUBSCRIPTION"'~' | \
-          sed 's~AZURE_LOCATION_PLACEHOLDER~'"$AZURE_LOCATION"'~' | \
+          sed 's~AZURE_LOCATION_PLACEHOLDER~'"$AZURE_LOCATION"'~' > $CREDS
         rm $CREDS.temp 2> /dev/null
         ;;
       gke)
